@@ -1,18 +1,22 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from backend.DB.dumper import dump_ingredients
+from backend.cocktail.models import StartIngredient
+from backend.data.dumper import dump_ingredients
+from backend.model.mixup import recommend, initialize
 import sqlite3 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     dump_ingredients('/backend/DB/ingredients.csv')
+    global init_table
+    init_table = initialize()
     yield
 
 server = FastAPI(lifespan=lifespan)
 
 @server.get("/mixup")
 def get_ingredients():
-    con = sqlite3.connect('backend/DB/db.sqlite3')
+    con = sqlite3.connect('backend/data/db.sqlite3')
     curs = con.cursor()
     res = curs.execute('SELECT name FROM Ingredients;').fetchall()
     res = [item for sublist in res for item in sublist]
@@ -25,5 +29,12 @@ def get_ingredients():
 @server.get("/")
 def root():
     return {
-        'name': 'root'
+      'name': 'root'
+    }
+
+@server.get("/mixup/result")
+def mixup_res(start: StartIngredient):
+    recipes = recommend(init_table, start.start)
+    return{
+        'recipes': recipes
     }
