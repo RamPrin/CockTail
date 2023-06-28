@@ -4,8 +4,8 @@ from os import path
 
 def dump_ingredients(path_to_csv:str|None=None, list_of_ingredients:list=[]):
     print('dumping ingredients...')
-    if not path.exists('backend/data/files/db.sqlite3'):
-        con = sqlite3.connect('backend/data/files/db.sqlite3')
+    if not path.exists('backend/data/db.sqlite3'):
+        con = sqlite3.connect('backend/data/db.sqlite3')
         curs = con.cursor()
 
         curs.execute("DROP TABLE IF EXISTS Ingredients")
@@ -14,7 +14,7 @@ def dump_ingredients(path_to_csv:str|None=None, list_of_ingredients:list=[]):
         con.commit()
 
         if path_to_csv is not None:
-            data = pandas.read_csv('backend/data/ingredients.csv')
+            data = pandas.read_csv(path_to_csv)
             data = data.iloc[:,0].to_list()
         else:
             data = list_of_ingredients

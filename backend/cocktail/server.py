@@ -16,7 +16,7 @@ server = FastAPI(lifespan=lifespan)
 
 @server.get("/mixup")
 def get_ingredients():
-    con = sqlite3.connect('backend/data/files/db.sqlite3')
+    con = sqlite3.connect('backend/data/db.sqlite3')
     curs = con.cursor()
     res = curs.execute('SELECT name FROM Ingredients;').fetchall()
     res = [item for sublist in res for item in sublist]
