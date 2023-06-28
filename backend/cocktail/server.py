@@ -7,7 +7,7 @@ import sqlite3
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    dump_ingredients('/backend/data/files/ingredients.csv')
+    dump_ingredients('backend/data/files/ingredients.csv')
     global init_table
     init_table = initialize()
     yield
@@ -32,7 +32,7 @@ def root():
       'name': 'root'
     }
 
-@server.get("/mixup/result")
+@server.post("/mixup/result")
 def mixup_res(start: StartIngredient):
     recipes = recommend(init_table, start.start)
     return{
