@@ -14,7 +14,7 @@ def dump_ingredients(path_to_csv:str|None=None, list_of_ingredients:list=[]):
         con.commit()
 
         if path_to_csv is not None:
-            data = pandas.read_csv('backend/data/ingredients.csv')
+            data = pandas.read_csv(path_to_csv)
             data = data.iloc[:,0].to_list()
         else:
             data = list_of_ingredients
