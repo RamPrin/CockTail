@@ -2,14 +2,14 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from backend.cocktail.models import StartIngredient
 from backend.data.dumper import dump_ingredients
-from backend.model.mixup import recommend, initialize
+from backend.model.mixup import recommend, Cocktail_Generator
 import sqlite3 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     dump_ingredients('backend/data/files/ingredients.csv')
-    global init_table
-    init_table = initialize()
+    global generator
+    generator = Cocktail_Generator('backend/data/files/probabilities_without_specials.csv')
     yield
 
 server = FastAPI(lifespan=lifespan)
@@ -34,7 +34,8 @@ def root():
 
 @server.post("/mixup/result")
 def mixup_res(start: StartIngredient):
-    recipes = recommend(init_table, start.start)
+    generator.main_ingredient(start.start)
+    recipes = generator.launch()
     return{
         'recipes': recipes
     }
