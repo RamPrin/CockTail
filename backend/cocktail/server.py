@@ -4,6 +4,7 @@ from cocktail.models import StartIngredient
 from data.dumper import dump_ingredients
 from model.mixup import recommend, Cocktail_Generator
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 import sqlite3
 
 @asynccontextmanager
@@ -37,9 +38,7 @@ def get_ingredients():
 
 @server.get("/")
 def root():
-    return {
-      'name': 'root'
-    }
+    return RedirectResponse(url="/docs")
 
 @server.post("/mixup/result")
 def mixup_res(start: StartIngredient):
