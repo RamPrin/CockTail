@@ -1,22 +1,31 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from backend.cocktail.models import StartIngredient
-from backend.data.dumper import dump_ingredients
-from backend.model.mixup import recommend, Cocktail_Generator
-import sqlite3 
+from cocktail.models import StartIngredient
+from data.dumper import dump_ingredients
+from model.mixup import recommend, Cocktail_Generator
+from fastapi.middleware.cors import CORSMiddleware
+import sqlite3
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    dump_ingredients('backend/data/files/ingredients.csv')
+    dump_ingredients('data/files/ingredients.csv')
     global generator
-    generator = Cocktail_Generator('backend/data/files/probabilities_without_specials.csv')
+    generator = Cocktail_Generator('data/files/probabilities_without_specials.csv')
     yield
 
 server = FastAPI(lifespan=lifespan)
 
+server.add_middleware(
+	CORSMiddleware,
+	allow_origins="*",
+	allow_credentials=True,
+	allow_methods=["*"],
+	allow_headers=["*"]
+)
+
 @server.get("/mixup")
 def get_ingredients():
-    con = sqlite3.connect('backend/data/db.sqlite3')
+    con = sqlite3.connect('data/db.sqlite3')
     curs = con.cursor()
     res = curs.execute('SELECT name FROM Ingredients;').fetchall()
     res = [item for sublist in res for item in sublist]
