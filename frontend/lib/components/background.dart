@@ -9,17 +9,20 @@ class Background extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Material(
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Image.asset(
-            Assets.background,
-            alignment: Alignment.center,
-            fit: BoxFit.cover,
-          ),
-          Center(child: child),
-        ],
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Material(
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              Assets.background,
+              alignment: Alignment.center,
+              fit: BoxFit.cover,
+            ),
+            Center(child: child),
+          ],
+        ),
       ),
     );
   }

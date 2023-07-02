@@ -1,3 +1,4 @@
+import 'package:capstone/components/adaptive_wrap.dart';
 import 'package:capstone/components/background.dart';
 import 'package:capstone/components/cock_button.dart';
 import 'package:capstone/core/assets/assets.dart';
@@ -17,21 +18,19 @@ class HomeScreen extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(Assets.logo),
-            Row(
+            AdaptiveWrap(
               mainAxisAlignment: MainAxisAlignment.center,
+              startSpacing: 50,
+              endSpacing: 50,
+              crossEndSpacing: 50,
+              spacing: 50,
               children: [
-                const SizedBox(
-                  width: 50,
-                ),
                 CockButton(
                   title: 'Mix Up!',
                   description:
                       'Just give me your preferences, and I’ll create the most interesting cocktail you’ve ever tasted.',
                   color: const Color(0xFFB00000),
                   onTap: () => context.goNamed(Routes.mixPage),
-                ),
-                const SizedBox(
-                  width: 50,
                 ),
                 CockButton(
                   title: 'Top 10',
@@ -41,18 +40,12 @@ class HomeScreen extends ConsumerWidget {
                   onTap: () => context.goNamed(Routes.topPage),
 
                 ),
-                const SizedBox(
-                  width: 50,
-                ),
                 CockButton(
                   title: 'Pick Up!',
                   description: 'Find desired cocktail among existing ones.',
                   color: const Color(0xFF1A1D1D),
                   onTap: () => context.goNamed(Routes.search),
 
-                ),
-                const SizedBox(
-                  width: 50,
                 ),
               ],
             )
