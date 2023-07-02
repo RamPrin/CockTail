@@ -1,8 +1,8 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from cocktail.models import StartIngredient
+from cocktail.models import StartMix
 from data.dumper import dump_ingredients
-from model.mixup import recommend, Cocktail_Generator
+from model.mixup import Cocktail_Generator
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 import sqlite3
@@ -41,9 +41,23 @@ def root():
     return RedirectResponse(url="/docs")
 
 @server.post("/mixup/result")
-def mixup_res(start: StartIngredient):
-    generator.main_ingredient(start.start)
+def mixup_res(start: StartMix):
+    generator.main_ingredient(start.include[0])
     recipes = generator.launch()
-    return{
-        'recipes': recipes
+    result = {
+        "cocktails":[]
     }
+    for i in range(len(recipes)):
+        result["cocktails"].append(
+            {
+            "name": f"#{i+1}",
+            "ingredients": [
+                {
+                "amount": 0, 
+                "measure": "cl", 
+                "name": name
+                } for name in recipes[i]
+            ] 
+            }
+        )
+    return result
