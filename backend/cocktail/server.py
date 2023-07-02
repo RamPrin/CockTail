@@ -42,6 +42,8 @@ def root():
 
 @server.post("/mixup/result")
 def mixup_res(start: StartMix):
+    if len(start.include) == 0:
+       start.include.append("orange")
     generator.main_ingredient(start.include[0])
     recipes = generator.launch()
     result = {
