@@ -96,8 +96,8 @@ class __$$_IngredientCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Ingredient implements _Ingredient {
-  _$_Ingredient({required this.name});
+class _$_Ingredient extends _Ingredient {
+  _$_Ingredient({required this.name}) : super._();
 
   factory _$_Ingredient.fromJson(Map<String, dynamic> json) =>
       _$$_IngredientFromJson(json);
@@ -109,18 +109,6 @@ class _$_Ingredient implements _Ingredient {
   String toString() {
     return 'Ingredient(name: $name)';
   }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_Ingredient &&
-            (identical(other.name, name) || other.name == name));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, name);
 
   @JsonKey(ignore: true)
   @override
@@ -136,8 +124,9 @@ class _$_Ingredient implements _Ingredient {
   }
 }
 
-abstract class _Ingredient implements Ingredient {
+abstract class _Ingredient extends Ingredient {
   factory _Ingredient({required final String name}) = _$_Ingredient;
+  _Ingredient._() : super._();
 
   factory _Ingredient.fromJson(Map<String, dynamic> json) =
       _$_Ingredient.fromJson;
