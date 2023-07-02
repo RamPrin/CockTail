@@ -1,4 +1,5 @@
 from pydantic import BaseModel
 
-class StartIngredient(BaseModel):
-    start: str = 'pineapple'
+class StartMix(BaseModel):
+    include: list = ['pineapple']
+    exclude: list = []
