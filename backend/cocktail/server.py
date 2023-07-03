@@ -1,20 +1,25 @@
-from contextlib import asynccontextmanager
-from fastapi import FastAPI
 from cocktail.models import StartMix, StartPick
+from contextlib import asynccontextmanager
 from data.dumper import dump_ingredients
-from model.mixup import Cocktail_Generator
-from model.pickup import init, main_pick_cocktail
+from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
+from model.mixup import ImpruvedCocktailGenerator
+from model.pickup import init_pickup, main_pick_cocktail
 import sqlite3 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     dump_ingredients('data/files/ingredients.csv')
     global generator
-    generator = Cocktail_Generator('data/files/probabilities_without_specials.csv')
-    init("data/files/pickup.csv")
+    generator = ImpruvedCocktailGenerator('data/files/mixup.csv')
+    init_pickup("data/files/pickup.csv")
     yield
 
 server = FastAPI(lifespan=lifespan)
+
+@server.get("/")
+def root():
+    return RedirectResponse(url='/docs')
 
 @server.get("/mixup")
 def get_ingredients():
@@ -28,18 +33,11 @@ def get_ingredients():
         "ingredients": res
     }
 
-@server.get("/")
-def root():
-    return {
-      'name': 'root'
-    }
-
 @server.post("/mixup/result")
 def mixup_res(start: StartMix):
     if len(start.include) == 0:
         start.include.append("apple")
-    generator.main_ingredient(start.include[0])
-    recipes = generator.launch()
+    recipes = generator.launch(start.include, start.exclude)
     result = {
         "cocktails":[]
     }
@@ -50,7 +48,6 @@ def mixup_res(start: StartMix):
             "ingredients": [
                 {
                 "amount": 0, 
-                "measure": "cl", 
                 "name": name
                 } for name in recipes[i]
             ] 

@@ -1,7 +1,7 @@
-from scipy import spatial
 import pandas as pd
+from scipy import spatial
 
-def init(table: str):
+def init_pickup(table: str):
   global df, cocktail_list
   df = pd.read_csv(table, index_col=0)
   cocktail_list = []
