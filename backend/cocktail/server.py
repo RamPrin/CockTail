@@ -4,7 +4,9 @@ from cocktail.models import StartMix, StartPick
 from data.dumper import dump_ingredients
 from model.mixup import Cocktail_Generator
 from model.pickup import init, main_pick_cocktail
-import sqlite3 
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
+import sqlite3
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -15,6 +17,14 @@ async def lifespan(app: FastAPI):
     yield
 
 server = FastAPI(lifespan=lifespan)
+
+server.add_middleware(
+	CORSMiddleware,
+	allow_origins="*",
+	allow_credentials=True,
+	allow_methods=["*"],
+	allow_headers=["*"]
+)
 
 @server.get("/mixup")
 def get_ingredients():
@@ -30,14 +40,13 @@ def get_ingredients():
 
 @server.get("/")
 def root():
-    return {
-      'name': 'root'
-    }
+    return RedirectResponse(url="/docs")
 
 @server.post("/mixup/result")
 def mixup_res(start: StartMix):
     if len(start.include) == 0:
         start.include.append("apple")
+       start.include.append("orange")
     generator.main_ingredient(start.include[0])
     recipes = generator.launch()
     result = {
@@ -49,11 +58,11 @@ def mixup_res(start: StartMix):
             "name": f"#{i+1}",
             "ingredients": [
                 {
-                "amount": 0, 
-                "measure": "cl", 
+                "amount": 0,
+                "measure": "cl",
                 "name": name
                 } for name in recipes[i]
-            ] 
+            ]
             }
         )
     return result
