@@ -2,8 +2,7 @@
 __pycache__/
 venv/
 *.sqlite3
-files/
 *.sh
-.dockerignore
 Dockerfile
 *.yml
+.dockerignore 
