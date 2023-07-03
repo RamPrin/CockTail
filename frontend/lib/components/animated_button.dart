@@ -23,6 +23,8 @@ class _AnimatedButtonState extends State<AnimatedButton>
 
   late Animation<double> _animation;
 
+  bool isHovered = false;
+
   @override
   void initState() {
     _controller = AnimationController(
@@ -48,9 +50,17 @@ class _AnimatedButtonState extends State<AnimatedButton>
       onPanCancel: () => _animateTo(1),
       onTapUp: (_) => _animateTo(1),
       onTapDown: (_) => _animateTo(0),
-      child: ScaleTransition(
-        scale: _animation,
-        child: widget.child,
+      child: MouseRegion(
+        onEnter: (event) => setState(() {
+          isHovered = true;
+        }),
+        onExit: (event) => setState(() {
+          isHovered = false;
+        }),
+        child: ScaleTransition(
+          scale: _animation,
+          child: widget.child,
+        ),
       ),
     );
   }

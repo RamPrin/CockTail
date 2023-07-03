@@ -3,6 +3,8 @@ from contextlib import asynccontextmanager
 from data.dumper import dump_ingredients
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 from model.mixup import ImpruvedCocktailGenerator
 from model.pickup import init_pickup, main_pick_cocktail
 import sqlite3 
@@ -20,6 +22,14 @@ server = FastAPI(lifespan=lifespan)
 @server.get("/")
 def root():
     return RedirectResponse(url='/docs')
+
+server.add_middleware(
+	CORSMiddleware,
+	allow_origins="*",
+	allow_credentials=True,
+	allow_methods=["*"],
+	allow_headers=["*"]
+)
 
 @server.get("/mixup")
 def get_ingredients():
@@ -47,10 +57,11 @@ def mixup_res(start: StartMix):
             "name": f"#{i+1}",
             "ingredients": [
                 {
-                "amount": 0, 
+                "amount": 0,
+                "measure": "cl",
                 "name": name
                 } for name in recipes[i]
-            ] 
+            ]
             }
         )
     return result

@@ -15,4 +15,3 @@ class StartPick(BaseModel):
     alcohol_free: bool = False
     min_alc: int|float = 0
     max_alc: int|float = 0
-    

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:capstone/components/animated_button.dart';
 import 'package:capstone/components/background.dart';
 import 'package:capstone/core/assets/assets.dart';
@@ -13,18 +15,19 @@ class TopScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var controller = usePageController();
     return Background(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 50),
-        child: Stack(
-          children: [
-            Column(
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 50),
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SvgPicture.asset(Assets.top10),
+                Flexible(flex: 1,child: SvgPicture.asset(Assets.top10)),
                 const SizedBox(
                   height: 50,
                 ),
-                Expanded(
+                Flexible(
+                  flex: 3,
                   child: PageView.builder(
                     controller: controller,
                     physics: const NeverScrollableScrollPhysics(),
@@ -32,7 +35,8 @@ class TopScreen extends HookConsumerWidget {
                     itemBuilder: (context, index) => Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Expanded(
+                        Flexible(
+                          flex: 5,
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
@@ -49,26 +53,33 @@ class TopScreen extends HookConsumerWidget {
                         const SizedBox(
                           height: 30,
                         ),
-                        const Text(
-                          "Abacaxi Ricaço",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 65,
-                            fontStyle: FontStyle.italic,
+                        const Flexible(
+                          flex: 1,
+                          child: FittedBox(
+                            child: Text(
+                              "Abacaxi Ricaço",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 65,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(
                           height: 30,
                         ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 3,
-                          child: const Text(
-                            "Ingredients: 1 whole pineapple, 9 cl white rum, 2.25 cl, lime juice, 1.5 cl, white sugar",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 30,
-                              fontStyle: FontStyle.italic,
+                        const Flexible(
+                          flex: 2,
+                          child: FittedBox(
+                            child: Text(
+                              "Ingredients:\n 1 whole pineapple,\n 9 cl white rum, 2.25 cl,\n lime juice, 1.5 cl,\n white sugar",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontStyle: FontStyle.italic,
+                              ),
                             ),
                           ),
                         ),
@@ -78,33 +89,43 @@ class TopScreen extends HookConsumerWidget {
                 )
               ],
             ),
-            Center(
+          ),
+          Center(
+            child: Padding(
+              padding:  EdgeInsets.symmetric(horizontal: min(100,MediaQuery.of(context).size.width/10)),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AnimatedButton(
-                    onTap: () => controller.previousPage(
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeOut,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width/10,
+                    child: AnimatedButton(
+                      onTap: () => controller.previousPage(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeOut,
+                      ),
+                      child: SvgPicture.asset(Assets.arrow),
                     ),
-                    child: SvgPicture.asset(Assets.arrow),
                   ),
-                   AnimatedButton(
-                          onTap: () => controller.nextPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeOut,
+                   SizedBox(
+                    width: MediaQuery.of(context).size.width/10,
+
+                     child: AnimatedButton(
+                            onTap: () => controller.nextPage(
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeOut,
+                            ),
+                            child: RotatedBox(
+                              quarterTurns: 2,
+                              child: SvgPicture.asset(Assets.arrow),
+                            ),
                           ),
-                          child: RotatedBox(
-                            quarterTurns: 2,
-                            child: SvgPicture.asset(Assets.arrow),
-                          ),
-                        ),
+                   ),
                 ],
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
