@@ -28,7 +28,7 @@ class Cocktail():
     
 class ImpruvedCocktailGenerator():
     def __init__(self, table) -> None:
-        self.prob_table = pd.read_csv(table)
+        self.prob_table = pd.read_csv(table, index_col=0)
         self.cocktail = Cocktail()
 
     def main_ingredients(self, ingredients):
@@ -82,4 +82,4 @@ class ImpruvedCocktailGenerator():
             while not self.cocktail.is_finished():
                 next_ingredient = self.eps_greedy(0.93, exclude)
                 self.cocktail.new_ingredient(next_ingredient)
-        return self.cocktail
+        return self.cocktail.cocktail

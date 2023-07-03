@@ -48,19 +48,19 @@ def mixup_res(start: StartMix):
     if len(start.include) == 0:
         start.include.append("apple")
     recipes = generator.launch(start.include, start.exclude)
+    print(recipes)
     result = {
         "cocktails":[]
     }
-    for i in range(len(recipes)):
-        result["cocktails"].append(
+    result["cocktails"].append(
             {
-            "name": f"#{i+1}",
+            "name": f"#1",
             "ingredients": [
                 {
                 "amount": 0,
                 "measure": "cl",
                 "name": name
-                } for name in recipes[i]
+                } for name in recipes
             ]
             }
         )
