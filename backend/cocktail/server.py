@@ -45,26 +45,38 @@ def get_ingredients():
 
 @server.post("/mixup/result")
 def mixup_res(start: StartMix):
-    if len(start.include) == 0:
-        start.include.append("apple")
-    recipes = generator.launch(start.include, start.exclude)
-    print(recipes)
-    result = {
-        "cocktails":[]
-    }
-    result["cocktails"].append(
-            {
-            "name": f"#1",
-            "ingredients": [
+    try:
+        if len(start.include) == 0:
+            start.include.append("apple")
+        recipes = generator.launch(start.include, start.exclude)
+        print(recipes)
+        result = {
+            "cocktails":[]
+        }
+        result["cocktails"].append(
                 {
-                "amount": 0,
-                "measure": "cl",
-                "name": name
-                } for name in recipes
+                "name": f"#1",
+                "ingredients": [
+                    {
+                    "amount": 0,
+                    "measure": "cl",
+                    "name": name
+                    } for name in recipes
+                ]
+                }
+            )
+        return result
+    except:
+        return {
+            "name": "NDA",
+            "ingredients": [
+                    {
+                        "amount": 0,
+                        "measure": "NDA",
+                        "name": "NDA"
+                    }
             ]
-            }
-        )
-    return result
+        }
 
 @server.post("/pickup/result")
 def pickup_res(data:StartPick):
