@@ -32,6 +32,8 @@ class ImpruvedCocktailGenerator():
         self.cocktail = Cocktail()
 
     def main_ingredients(self, ingredients):
+        if self.cocktail.get_cur_size > 0:
+            self.cocktail = Cocktail()
     # Append main ingredients
         for ing in ingredients:
             self.cocktail.new_ingredient(ing)
