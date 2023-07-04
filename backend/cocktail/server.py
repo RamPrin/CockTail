@@ -66,15 +66,20 @@ def mixup_res(start: StartMix):
                 }
             )
         return result
-    except:
+    except Exception as e:
+        print(e)
         return {
-            "name": "NDA",
-            "ingredients": [
-                    {
-                        "amount": 0,
-                        "measure": "NDA",
-                        "name": "NDA"
-                    }
+            "cocktails":[
+                {
+                    "name": "NDA",
+                    "ingredients": [
+                            {
+                                "amount": 0,
+                                "measure": "NDA",
+                                "name": "NDA"
+                            }
+                    ]
+                }
             ]
         }
 
