@@ -1,9 +1,10 @@
 import pandas as pd
 from scipy import spatial
 
-def init_pickup(table: str):
-  global df, cocktail_list
+def init_pickup(table: str, top: str):
+  global df, cocktail_list, topper
   df = pd.read_csv(table, index_col=0)
+  topper = pd.read_csv(top, index_col=0)
   cocktail_list = []
   for i in range(len(df['title'])):
     cocktail_list.append(Cocktail(df['cocktail_strength'][i],
@@ -18,6 +19,18 @@ class Cocktail:
   
   def check_alco(self, min_lvl, max_lvl):
     return (min_lvl <= self.alcolvl <= max_lvl)
+
+def split_ingredients(st):
+  lst = eval(st)
+  print(lst)
+  recipe = []
+  for l in lst:
+    tmp = l[0].split(" ")
+    tmp.append(l[1])
+    print(tmp)
+    recipe.append(tmp.copy())
+  return recipe
+
 
 def main_pick_cocktail(alcohol_free_button,
                        min_alc, max_alc,
@@ -44,19 +57,43 @@ def main_pick_cocktail(alcohol_free_button,
   result = []
 
   for id in ids:
-    st = df.iloc[id, [0,5]].to_list()
-    recipe = st[1].replace("[", "").replace("]", "").replace("'", "").split(", ")
+    st = df.iloc[id, [0,5,3,2]].to_list()
+    recipe = split_ingredients(st[1])
     print(recipe)
     result.append(
         {
           'name': st[0],
-          'recipe':[
+          'ingredients':[
               {
-                  'amount': recipe[i],
-                  'measure': 'cl',
-                  'name': recipe[i+1]
-              } for i in range(0, len(recipe), 2)
-          ]
+                  'amount': ing[0],
+                  'measure': ing[1],
+                  'name': ing[2]
+              } for ing in recipe
+          ],
+          "recipe": f'Recipe: {st[2]}\nGarnish: {st[3]}'
         }
+    )
+  return result
+
+def top():
+  result = {
+    'cocktails': []
+  }
+  for i in range(len(topper)):
+    st = topper.iloc[i, [0,5,3,2,6]].to_list()
+    recipe = split_ingredients(st[1])    
+    result['cocktails'].append(
+       {
+        'name': st[0],
+        'ingredients':[
+          {
+              'amount': ing[0],
+              'measure': ing[1],
+              'name': ing[2]
+          } for ing in recipe
+        ],
+        'recipe': f'Recipe: {st[2]}\nGarnish: {st[3]}',
+        'img': st[4]
+      }
     )
   return result

@@ -6,15 +6,14 @@ from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from model.mixup import ImpruvedCocktailGenerator
-from model.pickup import init_pickup, main_pick_cocktail
+from model.pickup import init_pickup, main_pick_cocktail, top
 import sqlite3 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    dump_ingredients('data/files/ingredients.csv')
     global generator
-    generator = ImpruvedCocktailGenerator('data/files/mixup.csv')
-    init_pickup("data/files/pickup.csv")
+    generator = ImpruvedCocktailGenerator('data/files/mixup.csv', 'data/files/len_probs.csv')
+    init_pickup("data/files/pickup.csv", 'data/files/top10_data.csv')
     yield
 
 server = FastAPI(lifespan=lifespan)
@@ -33,15 +32,15 @@ server.add_middleware(
 
 @server.get("/mixup")
 def get_ingredients():
-    con = sqlite3.connect('data/db.sqlite3')
-    curs = con.cursor()
-    res = curs.execute('SELECT name FROM Ingredients;').fetchall()
-    res = [item for sublist in res for item in sublist]
-    curs.close()
-    con.close()
-    return {
-        "ingredients": res
-    }
+    try:
+        return {
+            "ingredients": generator.ingredients()
+        }
+    except Exception as e:
+        print(e)
+        return {
+            "ingredients": []
+        }
 
 @server.post("/mixup/result")
 def mixup_res(start: StartMix):
@@ -49,12 +48,7 @@ def mixup_res(start: StartMix):
         if len(start.include) == 0:
             start.include.append("apple")
         recipes = generator.launch(start.include, start.exclude)
-        print(recipes)
         result = {
-            "cocktails":[]
-        }
-        result["cocktails"].append(
-                {
                 "name": f"#1",
                 "ingredients": [
                     {
@@ -62,28 +56,31 @@ def mixup_res(start: StartMix):
                     "measure": "cl",
                     "name": name
                     } for name in recipes
-                ]
-                }
-            )
+                ],
+                "recipe": "SHAKE-SHAKE"
+        }
         return result
     except Exception as e:
         print(e)
         return {
-            "cocktails":[
-                {
-                    "name": "NDA",
-                    "ingredients": [
-                            {
-                                "amount": 0,
-                                "measure": "NDA",
-                                "name": "NDA"
-                            }
-                    ]
-                }
-            ]
+                "name": "NDA",
+                "ingredients": [
+                        {
+                            "amount": 0,
+                            "measure": "NDA",
+                            "name": "NDA"
+                        }
+                ],
+                "recipe": "NDA"
         }
 
 @server.post("/pickup/result")
 def pickup_res(data:StartPick):
     result = main_pick_cocktail(data.alcohol_free, data.min_alc, data.max_alc, data.sweet, data.sour, data.savory, data.bitter, data.cream, data.spicy, data.fruity)
-    return result
+    return {
+        "cocktails":result
+    }
+
+@server.get("/top")
+def get_top():
+    return top()
