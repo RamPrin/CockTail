@@ -1,6 +1,5 @@
 from cocktail.models import StartMix, StartPick
 from contextlib import asynccontextmanager
-from data.dumper import dump_ingredients
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware

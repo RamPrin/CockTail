@@ -22,12 +22,10 @@ class Cocktail:
 
 def split_ingredients(st):
   lst = eval(st)
-  print(lst)
   recipe = []
   for l in lst:
     tmp = l[0].split(" ")
     tmp.append(l[1])
-    print(tmp)
     recipe.append(tmp.copy())
   return recipe
 
@@ -45,7 +43,7 @@ def main_pick_cocktail(alcohol_free_button,
   variation_list = []
   for i in cocktail_list:
     if (i.check_alco(min_alc, max_alc)):
-      variation_list.append([i.taste, i.row])
+      variation_list.append([i.taste, i.row, i.alcolvl])
   if (len(variation_list) == 0):
     return -1
 
@@ -59,7 +57,6 @@ def main_pick_cocktail(alcohol_free_button,
   for id in ids:
     st = df.iloc[id, [0,5,3,2]].to_list()
     recipe = split_ingredients(st[1])
-    print(recipe)
     result.append(
         {
           'name': st[0],
