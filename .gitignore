@@ -6,3 +6,5 @@ venv/
 Dockerfile
 *.yml
 .dockerignore 
+*.ipynb
+ipynb/
