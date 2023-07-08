@@ -17,12 +17,12 @@ class CockHeader extends HookConsumerWidget {
     final opened = useState(false);
 
     return Container(
-      color: opened.value? const Color(0xFF292A2A): Colors.transparent,
+      color: opened.value ? const Color(0xFF292A2A) : Colors.transparent,
       child: Stack(
         alignment: Alignment.center,
         children: [
           Opacity(
-            opacity: opened.value? 0:1,
+            opacity: opened.value ? 0 : 1,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(

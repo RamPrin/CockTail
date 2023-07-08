@@ -1,124 +1,118 @@
-import 'dart:math';
+import 'dart:convert';
 
 import 'package:capstone/components/animated_button.dart';
 import 'package:capstone/components/background.dart';
-import 'package:capstone/components/cock_scaffold.dart';
 import 'package:capstone/components/header.dart';
+import 'package:capstone/components/top_cocktail.dart';
 import 'package:capstone/core/assets/assets.dart';
+import 'package:capstone/core/assets/top_cocktails.dart';
+import 'package:capstone/core/utils/expansions.dart';
+import 'package:capstone/domain/top_cocktail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class TopScreen extends HookConsumerWidget {
-  const TopScreen({super.key});
+  TopScreen({super.key});
 
+  final List<TopCocktail> cocks = _loadTop();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var controller = usePageController();
-    return CockScaffold(
-      pageAsset: Assets.top10,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: PageView.builder(
-              controller: controller,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (context, index) => Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Flexible(
-                    flex: 5,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 4,
-                        ),
-                      ),
-                      child: Image.asset(
-                        Assets.placeholder,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const Flexible(
-                    flex: 1,
-                    child: FittedBox(
-                      child: Text(
-                        "Abacaxi Ricaço",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 65,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const Flexible(
-                    flex: 2,
-                    child: FittedBox(
-                      child: Text(
-                        "Ingredients:\n 1 whole pineapple,\n 9 cl white rum, 2.25 cl,\n lime juice, 1.5 cl,\n white sugar",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+
+    final page = useState(0);
+    controller.addListener(() {
+      page.value = controller.page?.toInt() ?? 0;
+    });
+
+    return Background(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 50),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const CockHeader(
+                pageAsset: Assets.top10,
               ),
-            ),
-          ),
-          Center(
-            child: Padding(
-              padding:  EdgeInsets.symmetric(horizontal: min(100,MediaQuery.of(context).size.width/10)),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width/10,
-                    child: AnimatedButton(
-                      onTap: () => controller.previousPage(
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeOut,
-                      ),
-                      child: SvgPicture.asset(Assets.arrow),
+              Expanded(
+                child: PageView.builder(
+                  controller: controller,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 100),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TopCocktailItem(
+                          cocktail: cocks[index],
+                        ),
+                      ],
                     ),
                   ),
-                   SizedBox(
-                    width: MediaQuery.of(context).size.width/10,
-    
-                     child: AnimatedButton(
-                            onTap: () => controller.nextPage(
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.easeOut,
+                ),
+              ),
+              Center(
+                child: SizedBox(
+                  width: !context.isMobile
+                      ? MediaQuery.of(context).size.width / 2
+                      : MediaQuery.of(context).size.width * 0.8,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AnimatedButton(
+                        onTap: () => controller.previousPage(
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeOut,
+                        ),
+                        child: SvgPicture.asset(Assets.arrow),
+                      ),
+                      ...cocks.indexed
+                          .map(
+                            (e) => Container(
+                              width: 20,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                color: e.$1 == page.value
+                                    ? Colors.white
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(100),
+                                border: e.$1 == page.value
+                                    ? null
+                                    : Border.all(
+                                        color: Colors.white,
+                                        width: 2,
+                                      ),
+                              ),
                             ),
-                            child: RotatedBox(
-                              quarterTurns: 2,
-                              child: SvgPicture.asset(Assets.arrow),
-                            ),
+                          )
+                          .toList(),
+                      RotatedBox(
+                        quarterTurns: 2,
+                        child: AnimatedButton(
+                          onTap: () => controller.nextPage(
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeOut,
                           ),
-                   ),
-                ],
+                          child: SvgPicture.asset(Assets.arrow),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          )
-        ],
+            ],
+          ),
+        ),
       ),
     );
+  }
+
+  static List<TopCocktail> _loadTop() {
+    return (jsonDecode(topCocktailsJsonString) as Iterable<dynamic>)
+        .map((e) => TopCocktail.fromJson(e))
+        .toList();
   }
 }

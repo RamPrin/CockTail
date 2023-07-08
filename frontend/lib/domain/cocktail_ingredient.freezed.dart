@@ -20,6 +20,7 @@ CocktailIngredient _$CocktailIngredientFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CocktailIngredient {
+  @JsonKey(fromJson: double.parse)
   double get amount => throw _privateConstructorUsedError;
   String get measure => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
@@ -36,7 +37,10 @@ abstract class $CocktailIngredientCopyWith<$Res> {
           CocktailIngredient value, $Res Function(CocktailIngredient) then) =
       _$CocktailIngredientCopyWithImpl<$Res, CocktailIngredient>;
   @useResult
-  $Res call({double amount, String measure, String name});
+  $Res call(
+      {@JsonKey(fromJson: double.parse) double amount,
+      String measure,
+      String name});
 }
 
 /// @nodoc
@@ -81,7 +85,10 @@ abstract class _$$_CocktailIngredientCopyWith<$Res>
       __$$_CocktailIngredientCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({double amount, String measure, String name});
+  $Res call(
+      {@JsonKey(fromJson: double.parse) double amount,
+      String measure,
+      String name});
 }
 
 /// @nodoc
@@ -120,12 +127,15 @@ class __$$_CocktailIngredientCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_CocktailIngredient implements _CocktailIngredient {
   _$_CocktailIngredient(
-      {required this.amount, required this.measure, required this.name});
+      {@JsonKey(fromJson: double.parse) required this.amount,
+      required this.measure,
+      required this.name});
 
   factory _$_CocktailIngredient.fromJson(Map<String, dynamic> json) =>
       _$$_CocktailIngredientFromJson(json);
 
   @override
+  @JsonKey(fromJson: double.parse)
   final double amount;
   @override
   final String measure;
@@ -168,7 +178,7 @@ class _$_CocktailIngredient implements _CocktailIngredient {
 
 abstract class _CocktailIngredient implements CocktailIngredient {
   factory _CocktailIngredient(
-      {required final double amount,
+      {@JsonKey(fromJson: double.parse) required final double amount,
       required final String measure,
       required final String name}) = _$_CocktailIngredient;
 
@@ -176,6 +186,7 @@ abstract class _CocktailIngredient implements CocktailIngredient {
       _$_CocktailIngredient.fromJson;
 
   @override
+  @JsonKey(fromJson: double.parse)
   double get amount;
   @override
   String get measure;

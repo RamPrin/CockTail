@@ -46,49 +46,55 @@ final router = GoRouter(
         GoRoute(
           path: Routes.topPage,
           name: Routes.topPage,
-          pageBuilder: (context, state) =>
-              const NoTransitionPage(child: TopScreen()),
+          pageBuilder: (context, state) => NoTransitionPage(child: TopScreen()),
         ),
         GoRoute(
-            path: Routes.pickPage,
-            name: Routes.pickPage,
-            pageBuilder: (context, state) =>
-                const NoTransitionPage(child: PickScreen()),
-            routes: [
-              GoRoute(
-                path: Routes.resultPage,
-                name: RouteNames.pickUpResult,
-                pageBuilder: (context, state) {
-                  final params = state.queryParameters;
-                  final alcoholFree =
-                      bool.tryParse(params['alcohol_free'] ?? "false") ?? false;
-                  final minAlc = int.tryParse(params['min_alc'] ?? "0") ?? 0;
-                  final maxAlc = int.tryParse(params['max_alc'] ?? "55") ?? 55;
-                  final sweet = int.tryParse(params['sweet'] ?? "5") ?? 5;
-                  final sour = int.tryParse(params['sour'] ?? "5") ?? 5;
-                  final savory = int.tryParse(params['savory'] ?? "5") ?? 5;
-                  final bitter = int.tryParse(params['bitter'] ?? "5") ?? 5;
-                  final feature = params['feature'];
+          path: Routes.pickPage,
+          name: Routes.pickPage,
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: PickScreen()),
+          routes: [
+            GoRoute(
+              path: Routes.resultPage,
+              name: RouteNames.pickUpResult,
+              pageBuilder: (context, state) {
+                final params = state.queryParameters;
+                print(params);
+                final alcoholFree =
+                    bool.tryParse(params['alcohol_free'] ?? "false") ?? false;
+                final minAlc = int.tryParse(params['min_alc'] ?? "0") ?? 0;
+                final maxAlc = int.tryParse(params['max_alc'] ?? "55") ?? 55;
+                final sweet = int.tryParse(params['sweet'] ?? "5") ?? 5;
+                final sour = int.tryParse(params['sour'] ?? "5") ?? 5;
+                final savory = int.tryParse(params['savory'] ?? "5") ?? 5;
+                final bitter = int.tryParse(params['bitter'] ?? "5") ?? 5;
+                final creamy =
+                    bool.tryParse(params['creamy'] ?? "false") ?? false;
+                final spicy =
+                    bool.tryParse(params['spicy'] ?? "false") ?? false;
+                final fruity =
+                    bool.tryParse(params['fruity'] ?? "false") ?? false;
 
-                  return NoTransitionPage(
-                    child: PickResultScreen(
-                      request: PickUpResultRequest(
-                        alcoolFree: alcoholFree,
-                        minAlc: minAlc / 100,
-                        maxAlc: maxAlc / 100,
-                        sweet: sweet,
-                        sour: sour,
-                        savory: savory,
-                        bitter: bitter,
-                        cream: feature == TasteFeature.cream.name,
-                        spicy: feature == TasteFeature.spice.name,
-                        fruity: feature == TasteFeature.fruit.name,
-                      ),
+                return NoTransitionPage(
+                  child: PickResultScreen(
+                    request: PickUpResultRequest(
+                      alcoolFree: alcoholFree,
+                      minAlc: minAlc / 100,
+                      maxAlc: maxAlc / 100,
+                      sweet: sweet,
+                      sour: sour,
+                      savory: savory,
+                      bitter: bitter,
+                      cream: creamy,
+                      spicy: spicy,
+                      fruity: fruity,
                     ),
-                  );
-                },
-              ),
-            ]),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ],
     ),
   ],

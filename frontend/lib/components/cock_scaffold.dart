@@ -19,7 +19,7 @@ class CockScaffold extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isMobile = context.isMobile;
 
-     final scrollController = useScrollController();
+    final scrollController = useScrollController();
 
     useValueChanged(MediaQuery.of(context).size,
         (_, __) => FocusManager.instance.primaryFocus?.unfocus());

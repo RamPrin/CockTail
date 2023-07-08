@@ -28,14 +28,13 @@ class Api {
         data: jsonEncode(request.toJson())));
     final json = resp.data;
 
-    return Cocktail.fromJson(json['cocktails'][0]);
+    return Cocktail.fromJson(json);
   }
 
-    Future<Cocktail> pickUpCocktail(PickUpResultRequest request) async {
-    final resp = (await dio.post(ApiConsts.muxUpResult,
+  Future<Cocktail> pickUpCocktail(PickUpResultRequest request) async {
+    final resp = (await dio.post(ApiConsts.pickUpResult,
         data: jsonEncode(request.toJson())));
     final json = resp.data;
-
     return Cocktail.fromJson(json['cocktails'][0]);
   }
 }
