@@ -15,7 +15,7 @@ class MixResultStateNotifier extends StateNotifier<MixResultState> {
   Future<void> load() async {
     state = MixResultState.loading();
     try {
-      final cocktail = await api.createCocktail(request);
+      final cocktail = await api.mixUpCocktail(request);
       state = MixResultState.data(cocktail: cocktail);
     } catch (e) {
       print(e.toString());
