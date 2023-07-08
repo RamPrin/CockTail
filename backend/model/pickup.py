@@ -1,5 +1,6 @@
 import pandas as pd
 from scipy import spatial
+import base64
 
 def init_pickup(table: str, top: str):
   global df, cocktail_list, topper
@@ -80,7 +81,7 @@ def top():
     st = topper.iloc[i, [0,5,3,2,6]].to_list()
     recipe = split_ingredients(st[1])    
     result['cocktails'].append(
-       {
+      {
         'name': st[0],
         'ingredients':[
           {
@@ -90,7 +91,11 @@ def top():
           } for ing in recipe
         ],
         'recipe': f'Recipe: {st[2]}\nGarnish: {st[3]}',
-        'img': st[4]
       }
     )
   return result
+
+def top_img(id):
+  return {
+      'img': base64.b64encode(open(f'data/files/imgs/{id}.png', 'rb').read())
+  }

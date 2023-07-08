@@ -5,8 +5,9 @@ from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from model.mixup import ImpruvedCocktailGenerator
-from model.pickup import init_pickup, main_pick_cocktail, top
+from model.pickup import init_pickup, main_pick_cocktail, top, top_img
 import sqlite3 
+import base64
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -83,3 +84,7 @@ def pickup_res(data:StartPick):
 @server.get("/top")
 def get_top():
     return top()
+
+@server.get("/top/{img_id}")
+def get_img(img_id: int):
+    return top_img(img_id)
