@@ -35,7 +35,7 @@ def main_pick_cocktail(alcohol_free_button,
                        sweet_inp, sour_inp, savory_inp, bitter_inp,
                        cream_button, spicy_button, fruity_button):
 
-  user_taste = [sweet_inp, sour_inp, savory_inp, bitter_inp, cream_button, spicy_button, fruity_button]
+  user_taste = [sweet_inp, sour_inp, savory_inp, bitter_inp, int(cream_button), int(spicy_button), int(fruity_button)]
   if (alcohol_free_button):
     min_alc = 0.0
     max_alc = 0.0
