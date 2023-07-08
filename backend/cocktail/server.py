@@ -51,7 +51,7 @@ def mixup_res(start: StartMix):
                 "name": f"#1",
                 "ingredients": [
                     {
-                    "amount": 0,
+                    "amount": f'{0}',
                     "measure": "cl",
                     "name": name
                     } for name in recipes
