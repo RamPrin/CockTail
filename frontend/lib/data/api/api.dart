@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:capstone/data/api/api_consts.dart';
 import 'package:capstone/data/api/api_models/mixup_result_request_model.dart';
+import 'package:capstone/data/api/api_models/pick_up_result_request.dart';
 import 'package:capstone/data/api/dio.dart';
 import 'package:capstone/domain/cocktail.dart';
 import 'package:capstone/domain/ingredient.dart';
@@ -22,11 +23,18 @@ class Api {
         .toList();
   }
 
-  Future<Cocktail> createCocktail(MixUpResultRequest request) async {
+  Future<Cocktail> mixUpCocktail(MixUpResultRequest request) async {
     final resp = (await dio.post(ApiConsts.muxUpResult,
         data: jsonEncode(request.toJson())));
     final json = resp.data;
-    print(json);
+
+    return Cocktail.fromJson(json['cocktails'][0]);
+  }
+
+    Future<Cocktail> pickUpCocktail(PickUpResultRequest request) async {
+    final resp = (await dio.post(ApiConsts.muxUpResult,
+        data: jsonEncode(request.toJson())));
+    final json = resp.data;
 
     return Cocktail.fromJson(json['cocktails'][0]);
   }

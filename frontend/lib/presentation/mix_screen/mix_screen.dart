@@ -1,5 +1,7 @@
 import 'package:capstone/components/animated_button.dart';
 import 'package:capstone/components/background.dart';
+import 'package:capstone/components/cock_scaffold.dart';
+import 'package:capstone/components/header.dart';
 import 'package:capstone/core/assets/assets.dart';
 import 'package:capstone/core/navigation/routes.dart';
 import 'package:capstone/core/utils/expansions.dart';
@@ -23,23 +25,10 @@ class MixScreen extends HookConsumerWidget {
     final isMobile = context.isMobile;
     final s = MediaQuery.of(context).size.height * 0.45;
 
-    final scrollController = useScrollController();
+   
 
-    useValueChanged(MediaQuery.of(context).size,
-        (_, __) => FocusManager.instance.primaryFocus?.unfocus());
-
-    final scrollCallback = useCallback(
-        () => scrollController.addListener(() {
-              FocusManager.instance.primaryFocus?.unfocus();
-            }),
-        [scrollController]);
-
-    useEffect(() {
-      scrollController.addListener(scrollCallback);
-      return () => scrollController.removeListener(scrollCallback);
-    }, [scrollController]);
-
-    return Background(
+    return CockScaffold(
+      pageAsset: Assets.mixUp,
         child: switch (state) {
       Loading _ => const Center(
           child: CircularProgressIndicator(color: Colors.white),
@@ -54,9 +43,7 @@ class MixScreen extends HookConsumerWidget {
           ),
         ),
       Data data => isMobile
-          ? ListView(
-              controller: scrollController,
-              padding: const EdgeInsets.symmetric(horizontal: 100),
+          ? Column(
               children: [
                 SvgPicture.asset(Assets.mixUp),
                 const SearchTextField(),
@@ -187,7 +174,7 @@ class MixScreen extends HookConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     AnimatedButton(
-                      onTap: () => context.goNamed(Routes.mixResultPage),
+                      onTap: () => context.goNamed(Routes.resultPage),
                       child: Container(
                         padding: const EdgeInsets.all(15),
                         decoration: BoxDecoration(
@@ -215,11 +202,8 @@ class MixScreen extends HookConsumerWidget {
                 )
               ],
             )
-          : ListView(
-              controller: scrollController,
-              padding: const EdgeInsets.symmetric(horizontal: 100),
+          : Column(
               children: [
-                SvgPicture.asset(Assets.mixUp),
                 const SearchTextField(),
                 const SizedBox(
                   height: 50,
@@ -368,7 +352,7 @@ class MixScreen extends HookConsumerWidget {
                 Center(
                   child: AnimatedButton(
                     onTap: () => context.goNamed(
-                      Routes.mixResultPage,
+                      RouteNames.mixUpResult,
                       queryParameters: {
                         'include': data.included.map((e) => e.name).toList(),
                         "exclude": data.excluded.map((e) => e.name).toList(),

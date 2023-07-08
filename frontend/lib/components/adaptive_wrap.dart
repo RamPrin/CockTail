@@ -40,13 +40,17 @@ class AdaptiveWrap extends ConsumerWidget {
                   width: spacing,
                 ));
     }
-    childs.add(
+    if(endSpacing > 0) {
+      childs.add(
         isMobile ? SizedBox(height: endSpacing) : SizedBox(width: endSpacing));
-    childs.insert(
+    }
+    if(startSpacing > 0) {
+      childs.insert(
         0,
         isMobile
             ? SizedBox(height: startSpacing)
             : SizedBox(width: startSpacing));
+    }
 
     return isMobile
         ? Padding(
@@ -63,7 +67,7 @@ class AdaptiveWrap extends ConsumerWidget {
             padding: EdgeInsets.only(
                 top: crossStartSpacing, bottom: crossEndSpacing),
             child: Row(
-              mainAxisSize: MainAxisSize.min,
+              // mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: mainAxisAlignment,
               crossAxisAlignment: crossAxisAlignment,
               children: childs,

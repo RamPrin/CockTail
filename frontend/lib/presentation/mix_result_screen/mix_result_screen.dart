@@ -1,5 +1,7 @@
 import 'package:capstone/components/background.dart';
+import 'package:capstone/components/cock_scaffold.dart';
 import 'package:capstone/components/cocktail.dart';
+import 'package:capstone/core/assets/assets.dart';
 import 'package:capstone/data/api/api_models/mixup_result_request_model.dart';
 import 'package:capstone/presentation/mix_result_screen/state/notifier.dart';
 import 'package:capstone/presentation/mix_result_screen/state/state_model.dart';
@@ -15,7 +17,8 @@ class MixResultScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(mixResultStateNotifierProvider(request));
 
-    return Background(
+    return CockScaffold(
+      pageAsset: Assets.mixUp,
         child: switch (state) {
       Loading _ => const Center(
           child: CircularProgressIndicator(color: Colors.white),
