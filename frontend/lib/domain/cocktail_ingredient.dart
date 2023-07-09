@@ -7,10 +7,11 @@ part 'cocktail_ingredient.g.dart';
 @freezed
 class CocktailIngredient with _$CocktailIngredient {
   factory CocktailIngredient({
-    required double amount,
+    @JsonKey(fromJson: double.parse) required double amount,
     required String measure,
-    required String name
+    required String name,
   }) = _CocktailIngredient;
 
-  factory CocktailIngredient.fromJson(Map<String, dynamic> json) =>_$CocktailIngredientFromJson(json);
+  factory CocktailIngredient.fromJson(Map<String, dynamic> json) =>
+      _$CocktailIngredientFromJson(json);
 }

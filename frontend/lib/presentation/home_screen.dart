@@ -44,7 +44,7 @@ class HomeScreen extends ConsumerWidget {
                   title: 'Pick Up!',
                   description: 'Find desired cocktail among existing ones.',
                   color: const Color(0xFF1A1D1D),
-                  onTap: () => context.goNamed(Routes.search),
+                  onTap: () => context.goNamed(Routes.pickPage),
 
                 ),
               ],

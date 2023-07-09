@@ -9,7 +9,7 @@ part of 'cocktail_ingredient.dart';
 _$_CocktailIngredient _$$_CocktailIngredientFromJson(
         Map<String, dynamic> json) =>
     _$_CocktailIngredient(
-      amount: (json['amount'] as num).toDouble(),
+      amount: double.parse(json['amount'] as String),
       measure: json['measure'] as String,
       name: json['name'] as String,
     );

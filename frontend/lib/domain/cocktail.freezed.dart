@@ -23,6 +23,7 @@ mixin _$Cocktail {
   String get name => throw _privateConstructorUsedError;
   List<CocktailIngredient> get ingredients =>
       throw _privateConstructorUsedError;
+  String get recipe => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,7 @@ abstract class $CocktailCopyWith<$Res> {
   factory $CocktailCopyWith(Cocktail value, $Res Function(Cocktail) then) =
       _$CocktailCopyWithImpl<$Res, Cocktail>;
   @useResult
-  $Res call({String name, List<CocktailIngredient> ingredients});
+  $Res call({String name, List<CocktailIngredient> ingredients, String recipe});
 }
 
 /// @nodoc
@@ -53,6 +54,7 @@ class _$CocktailCopyWithImpl<$Res, $Val extends Cocktail>
   $Res call({
     Object? name = null,
     Object? ingredients = null,
+    Object? recipe = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -63,6 +65,10 @@ class _$CocktailCopyWithImpl<$Res, $Val extends Cocktail>
           ? _value.ingredients
           : ingredients // ignore: cast_nullable_to_non_nullable
               as List<CocktailIngredient>,
+      recipe: null == recipe
+          ? _value.recipe
+          : recipe // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -74,7 +80,7 @@ abstract class _$$_CocktailCopyWith<$Res> implements $CocktailCopyWith<$Res> {
       __$$_CocktailCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, List<CocktailIngredient> ingredients});
+  $Res call({String name, List<CocktailIngredient> ingredients, String recipe});
 }
 
 /// @nodoc
@@ -90,6 +96,7 @@ class __$$_CocktailCopyWithImpl<$Res>
   $Res call({
     Object? name = null,
     Object? ingredients = null,
+    Object? recipe = null,
   }) {
     return _then(_$_Cocktail(
       name: null == name
@@ -100,6 +107,10 @@ class __$$_CocktailCopyWithImpl<$Res>
           ? _value._ingredients
           : ingredients // ignore: cast_nullable_to_non_nullable
               as List<CocktailIngredient>,
+      recipe: null == recipe
+          ? _value.recipe
+          : recipe // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -108,7 +119,9 @@ class __$$_CocktailCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Cocktail implements _Cocktail {
   _$_Cocktail(
-      {required this.name, required final List<CocktailIngredient> ingredients})
+      {required this.name,
+      required final List<CocktailIngredient> ingredients,
+      required this.recipe})
       : _ingredients = ingredients;
 
   factory _$_Cocktail.fromJson(Map<String, dynamic> json) =>
@@ -125,8 +138,11 @@ class _$_Cocktail implements _Cocktail {
   }
 
   @override
+  final String recipe;
+
+  @override
   String toString() {
-    return 'Cocktail(name: $name, ingredients: $ingredients)';
+    return 'Cocktail(name: $name, ingredients: $ingredients, recipe: $recipe)';
   }
 
   @override
@@ -136,13 +152,14 @@ class _$_Cocktail implements _Cocktail {
             other is _$_Cocktail &&
             (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality()
-                .equals(other._ingredients, _ingredients));
+                .equals(other._ingredients, _ingredients) &&
+            (identical(other.recipe, recipe) || other.recipe == recipe));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, name, const DeepCollectionEquality().hash(_ingredients));
+  int get hashCode => Object.hash(runtimeType, name,
+      const DeepCollectionEquality().hash(_ingredients), recipe);
 
   @JsonKey(ignore: true)
   @override
@@ -161,7 +178,8 @@ class _$_Cocktail implements _Cocktail {
 abstract class _Cocktail implements Cocktail {
   factory _Cocktail(
       {required final String name,
-      required final List<CocktailIngredient> ingredients}) = _$_Cocktail;
+      required final List<CocktailIngredient> ingredients,
+      required final String recipe}) = _$_Cocktail;
 
   factory _Cocktail.fromJson(Map<String, dynamic> json) = _$_Cocktail.fromJson;
 
@@ -169,6 +187,8 @@ abstract class _Cocktail implements Cocktail {
   String get name;
   @override
   List<CocktailIngredient> get ingredients;
+  @override
+  String get recipe;
   @override
   @JsonKey(ignore: true)
   _$$_CocktailCopyWith<_$_Cocktail> get copyWith =>

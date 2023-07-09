@@ -1,5 +1,6 @@
-class ApiConsts{
-  static const String baseUrl = 'http://cocktail.chickenkiller.com:7777';
+class ApiConsts {
+  static const String baseUrl = 'https://docs.cocktail.chickenkiller.com';
   static const String muxUp = '/mixup';
   static const String muxUpResult = '/mixup/result';
+  static const String pickUpResult = '/pickup/result';
 }
