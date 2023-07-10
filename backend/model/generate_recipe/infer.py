@@ -1,10 +1,15 @@
-from transformers import T5Tokenizer, T5ForConditionalGeneration
+import requests
 
-tokenizer = T5Tokenizer.from_pretrained("yarika/cocktail_maker")
-model = T5ForConditionalGeneration.from_pretrained("yarika/cocktail_maker")
+API_URL = "https://api-inference.huggingface.co/models/yarika/cocktail_maker"
 
-input_text = "rutte old simon genever,lemon juice,raspberries,sugar syrup,orange juice,pineapple juice,luxardo maraschino liqueur,chilled water"
-input_ids = tokenizer(input_text, return_tensors="pt").input_ids
+def query(payload):
+	response = requests.post(API_URL, json=payload)
+	return response.json()
+	
+output = query({
+	"inputs": "rutte old simon genever,lemon juice,raspberries,sugar syrup,orange juice,pineapple juice,luxardo maraschino liqueur,chilled waters",
+	"parameters": {"num_beams": 4, "max_length": 200},
+})
 
-outputs = model.generate(input_ids, max_new_tokens=100, num_beams=4)
-print(tokenizer.decode(outputs[0]))
+
+print(output)
