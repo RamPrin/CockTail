@@ -1,3 +1,4 @@
+import 'package:capstone/core/assets/assets.dart';
 import 'package:capstone/core/navigation/router.dart';
 import 'package:capstone/core/navigation/routes.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,9 @@ class App extends HookConsumerWidget {
     return MaterialApp.router(
       routerConfig: router,
       title: name,
+      theme: ThemeData(
+        fontFamily: Fonts.sansation,
+      ),
     );
   }
 }

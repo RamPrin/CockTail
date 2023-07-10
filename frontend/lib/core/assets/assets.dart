@@ -8,3 +8,8 @@ class Assets {
   static const String placeholder = 'assets/image_placeholder.png';
   static const String topCocktailsJson = 'assets/top_cocktails.json';
 }
+
+class Fonts {
+  static const String carterOne = "CarterOne";
+  static const String sansation = "Sansation";
+}

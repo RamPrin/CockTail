@@ -7,6 +7,7 @@ import 'package:capstone/data/api/dio.dart';
 import 'package:capstone/domain/cocktail.dart';
 import 'package:capstone/domain/ingredient.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Api {
@@ -24,18 +25,39 @@ class Api {
   }
 
   Future<Cocktail> mixUpCocktail(MixUpResultRequest request) async {
-    final resp = (await dio.post(ApiConsts.muxUpResult,
-        data: jsonEncode(request.toJson())));
+    final resp = (await dio.post(
+      ApiConsts.muxUpResult,
+      data: jsonEncode(request.toJson()),
+    ));
     final json = resp.data;
 
     return Cocktail.fromJson(json);
   }
 
   Future<Cocktail> pickUpCocktail(PickUpResultRequest request) async {
-    final resp = (await dio.post(ApiConsts.pickUpResult,
-        data: jsonEncode(request.toJson())));
+    final resp = (await dio.post(
+      ApiConsts.pickUpResult,
+      data: jsonEncode(request.toJson()),
+    ));
     final json = resp.data;
     return Cocktail.fromJson(json['cocktails'][0]);
+  }
+
+  Future<List<Cocktail>> getTopCocktails() async {
+    final resp = (await dio.get(ApiConsts.top));
+    final json = resp.data;
+
+    return (json['cocktails'] as Iterable<dynamic>)
+        .map((e) => Cocktail.fromJson(e))
+        .toList();
+  }
+
+  Future<Image> getTopCocktailImage(int id) async {
+    final resp = (await dio.get("${ApiConsts.top}/$id",
+        options: Options(sendTimeout: const Duration(seconds: 10))));
+    final json = resp.data;
+
+    return Image.memory(base64Decode(json['img']));
   }
 }
 

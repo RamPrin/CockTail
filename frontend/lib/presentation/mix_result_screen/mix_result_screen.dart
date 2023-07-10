@@ -2,10 +2,12 @@ import 'package:capstone/components/animated_button.dart';
 import 'package:capstone/components/cock_scaffold.dart';
 import 'package:capstone/components/cocktail.dart';
 import 'package:capstone/core/assets/assets.dart';
+import 'package:capstone/core/navigation/routes.dart';
 import 'package:capstone/data/api/api_models/mixup_result_request_model.dart';
 import 'package:capstone/presentation/mix_result_screen/state/notifier.dart';
 import 'package:capstone/presentation/mix_result_screen/state/state_model.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class MixResultScreen extends ConsumerWidget {
@@ -43,9 +45,7 @@ class MixResultScreen extends ConsumerWidget {
               Center(
                 child: AnimatedButton(
                   onTap: () {
-                    ref
-                        .read(mixResultStateNotifierProvider(request).notifier)
-                        .load();
+                    context.goNamed(Routes.mixPage);
                   },
                   child: Container(
                     padding: const EdgeInsets.all(15),
