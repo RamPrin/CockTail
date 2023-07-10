@@ -10,7 +10,6 @@ class Ingredient with _$Ingredient {
     required String name,
   }) = _Ingredient;
 
-
   @override
   bool operator ==(Object other) =>
       other is Ingredient &&
@@ -20,11 +19,16 @@ class Ingredient with _$Ingredient {
   @override
   int get hashCode => name.hashCode;
 
-  bool followsQuery(String query){
-    return name.trim().toLowerCase().replaceAll(" ", "").startsWith(query.trim().toLowerCase().replaceAll(" ", ""));
+  bool followsQuery(String query) {
+    return name
+        .trim()
+        .toLowerCase()
+        .replaceAll(" ", "")
+        .contains(query.trim().toLowerCase().replaceAll(" ", ""));
   }
 
   const Ingredient._();
 
-  factory Ingredient.fromJson(Map<String, dynamic> json) =>_$IngredientFromJson(json);
+  factory Ingredient.fromJson(Map<String, dynamic> json) =>
+      _$IngredientFromJson(json);
 }

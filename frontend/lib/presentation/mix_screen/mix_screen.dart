@@ -39,7 +39,6 @@ class MixScreen extends HookConsumerWidget {
           Data data => isMobile
               ? Column(
                   children: [
-                    SvgPicture.asset(Assets.mixUp),
                     const SearchTextField(),
                     const SizedBox(
                       height: 30,

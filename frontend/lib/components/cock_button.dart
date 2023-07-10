@@ -1,4 +1,5 @@
 import 'package:capstone/components/animated_button.dart';
+import 'package:capstone/core/assets/assets.dart';
 import 'package:flutter/material.dart';
 
 class CockButton extends StatelessWidget {
@@ -25,7 +26,7 @@ class CockButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
         width: 370,
-        height: 210,
+        height: 230,
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(16),
@@ -48,6 +49,7 @@ class CockButton extends StatelessWidget {
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 36,
+                fontFamily: Fonts.carterOne,
               ),
             ),
             Divider(

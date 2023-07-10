@@ -2,10 +2,12 @@ import 'package:capstone/components/animated_button.dart';
 import 'package:capstone/components/cock_scaffold.dart';
 import 'package:capstone/components/cocktail.dart';
 import 'package:capstone/core/assets/assets.dart';
+import 'package:capstone/core/navigation/routes.dart';
 import 'package:capstone/data/api/api_models/pick_up_result_request.dart';
 import 'package:capstone/presentation/pick_result_screen%20copy/state/notifier.dart';
 import 'package:capstone/presentation/pick_result_screen%20copy/state/state_model.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class PickResultScreen extends ConsumerWidget {
@@ -43,9 +45,7 @@ class PickResultScreen extends ConsumerWidget {
               Center(
                 child: AnimatedButton(
                   onTap: () {
-                    ref
-                        .read(pickResultStateNotifierProvider(request).notifier)
-                        .load();
+                    context.goNamed(Routes.pickPage);
                   },
                   child: Container(
                     padding: const EdgeInsets.all(15),

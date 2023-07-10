@@ -6,7 +6,7 @@ import 'package:capstone/presentation/mix_result_screen/mix_result_screen.dart';
 import 'package:capstone/presentation/mix_screen/mix_screen.dart';
 import 'package:capstone/presentation/pick_result_screen%20copy/pick_result_screen.dart';
 import 'package:capstone/presentation/pick_screen/pick_screen.dart';
-import 'package:capstone/presentation/top_screen.dart';
+import 'package:capstone/presentation/top_screen/top_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final router = GoRouter(
