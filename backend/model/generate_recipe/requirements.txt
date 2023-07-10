@@ -1,0 +1,4 @@
+accelerate~=0.20.1
+transformers==4.30.2
+sentencepiece==0.1.99
+gdown==4.7.1
