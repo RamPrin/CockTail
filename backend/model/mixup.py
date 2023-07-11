@@ -1,6 +1,38 @@
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import normalize
+from model.generator.reciper import query
+
+def ingredients_from_recipe(request, components):
+    start = -1
+    for i in range(len(request)):
+        if request[i].isnumeric():
+            start = i
+            break
+    recipe = request[:start]
+    ingredients = request[start:]
+    ingredients = ingredients.split(" ")
+    comp_ind = 0
+    ing_ind = 0
+    response = {
+        "name": "#1",
+        "ingredients":[],
+        "recipe": recipe
+    }
+
+    while ing_ind < len(ingredients) and comp_ind < len(components):
+        if ingredients[ing_ind][0].isnumeric():
+            response['ingredients'].append(
+                {
+                    'amount': ingredients[ing_ind],
+                    'measure': ingredients[ing_ind+1],
+                    'name': components[comp_ind]
+                }
+            )
+            comp_ind += 1
+            ing_ind += 2
+        else:
+            ing_ind += 1
+    return response
 
 class Cocktail():
     def __init__(self, size, ingredients) -> None:
@@ -90,7 +122,22 @@ class ImpruvedCocktailGenerator():
         while not self.cocktail.is_finished():
             next_ingredient = self.eps_greedy(0.93, exclude)
             self.cocktail.new_ingredient(next_ingredient)
-        return self.cocktail.cocktail_components()
+        try:
+            response = query(self.cocktail.cocktail_components())
+            return ingredients_from_recipe(response, self.cocktail.cocktail_components())
+        except Exception as e:
+            print('mixup.py',e)
+            return {
+                "name": "#1",
+                "ingredients":[
+                    {
+                        "amount": '0',
+                        "measure": "cl", 
+                        "name": name
+                    } for name in self.cocktail.cocktail_components()
+                ],
+                "recipe": "SHAKE all the ingredients."
+            }
 
     def ingredients(self):
         return self.prob_table.columns.to_list()

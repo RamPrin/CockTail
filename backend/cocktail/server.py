@@ -6,8 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from model.mixup import ImpruvedCocktailGenerator
 from model.pickup import init_pickup, main_pick_cocktail, top, top_img
-import sqlite3 
-import base64
+
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -47,19 +47,8 @@ def mixup_res(start: StartMix):
     try:
         if len(start.include) == 0:
             start.include.append("apple")
-        recipes = generator.launch(start.include, start.exclude)
-        result = {
-                "name": f"#1",
-                "ingredients": [
-                    {
-                    "amount": f'{0}',
-                    "measure": "cl",
-                    "name": name
-                    } for name in recipes
-                ],
-                "recipe": "SHAKE-SHAKE"
-        }
-        return result
+        recipe = generator.launch(start.include, start.exclude)
+        return recipe
     except Exception as e:
         print(e)
         return {
