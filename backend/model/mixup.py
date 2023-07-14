@@ -1,10 +1,14 @@
 import numpy as np
 import pandas as pd
 import re
+from concurrent.futures import ThreadPoolExecutor
+
 from model.generator.reciper import query
 from model.generator.infer import query_image
 
-def ingredients_from_recipe(request, components):
+def recipe_generate(components):
+    print('Start generating...')
+    request = query(components)
     start = -1
     for i in range(len(request)):
         if request[i].isnumeric():
@@ -50,8 +54,16 @@ def ingredients_from_recipe(request, components):
             ing_ind += 2
         else:
             ing_ind += 1
-    response['pic'] = query_image(components)
     return response
+
+def ingredients_from_recipe(components):
+    with ThreadPoolExecutor() as exec:
+        recipe = exec.submit(recipe_generate, (components))
+        img = exec.submit(query_image, (components))
+        exec.shutdown(wait=True, cancel_futures=True)
+        response = recipe.result()
+        response['img'] = img.result()
+        return response
 
 class Cocktail():
     def __init__(self, size, ingredients) -> None:
@@ -142,8 +154,7 @@ class ImpruvedCocktailGenerator():
             next_ingredient = self.eps_greedy(0.93, exclude)
             self.cocktail.new_ingredient(next_ingredient)
         try:
-            response = query(self.cocktail.cocktail_components())
-            return ingredients_from_recipe(response, self.cocktail.cocktail_components())
+            return ingredients_from_recipe(self.cocktail.cocktail_components())
         except Exception as e:
             print('mixup.py',e)
             return {
