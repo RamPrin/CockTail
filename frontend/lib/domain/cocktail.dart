@@ -1,7 +1,5 @@
 // ignore_for_file: invalid_annotation_target
 import 'package:capstone/domain/cocktail_ingredient.dart';
-import 'package:capstone/domain/ingredient.dart';
-import 'package:capstone/domain/top_cocktail.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'cocktail.freezed.dart';

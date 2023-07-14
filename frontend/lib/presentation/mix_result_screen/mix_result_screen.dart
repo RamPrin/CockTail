@@ -1,6 +1,7 @@
 import 'package:capstone/components/animated_button.dart';
 import 'package:capstone/components/cock_scaffold.dart';
 import 'package:capstone/components/cocktail.dart';
+import 'package:capstone/components/error.dart';
 import 'package:capstone/core/assets/assets.dart';
 import 'package:capstone/core/navigation/routes.dart';
 import 'package:capstone/data/api/api_models/mixup_result_request_model.dart';
@@ -25,15 +26,11 @@ class MixResultScreen extends ConsumerWidget {
         Loading _ => const Center(
             child: CircularProgressIndicator(color: Colors.white),
           ),
-        Error _ => const Center(
-            child: Text(
-              "Error",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 40,
-              ),
+        Error _ => ErrorPage(
+              onRetry: () {
+                ref.read(mixResultStateNotifierProvider(request).notifier).load();
+              },
             ),
-          ),
         Data data => Column(
             children: [
               CocktailItem(

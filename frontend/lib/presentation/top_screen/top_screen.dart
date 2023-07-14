@@ -1,6 +1,7 @@
 import 'package:capstone/components/animated_button.dart';
 import 'package:capstone/components/background.dart';
 import 'package:capstone/components/cocktail.dart';
+import 'package:capstone/components/error.dart';
 import 'package:capstone/components/header.dart';
 import 'package:capstone/core/assets/assets.dart';
 import 'package:capstone/core/utils/expansions.dart';
@@ -45,35 +46,37 @@ class TopScreen extends HookConsumerWidget {
                       color: Colors.white,
                     )
                   ],
-                Error _ => const [
-                    Text(
-                      "Error",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                Error _ => [
+                    ErrorPage(
+                      onRetry: () {
+                        ref
+                            .read(topScreenStateNotifierProvider.notifier)
+                            .load();
+                      },
                     )
                   ],
                 Data data => [
                     Expanded(
-                      child: PageView.builder(
-                        controller: controller,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: data.cocktails.length,
-                        itemBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 100),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CocktailItem(
+                      child: LayoutBuilder(
+                        builder: (context,constraints) {
+                          print("meow"+constraints.maxHeight.toString());
+                          return PageView.builder(
+                            controller: controller,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: data.cocktails.length,
+                            itemBuilder: (context, index) => Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 100),
+                              child: CocktailItem(
                                 cocktail: data.cocktails[index],
                                 fillImageWithPlaceholder: false,
                                 image: data.images.containsKey(index)
                                     ? data.images[index]
                                     : null,
+                                    height: constraints.maxHeight,
                               ),
-                            ],
-                          ),
-                        ),
+                            ),
+                          );
+                        }
                       ),
                     ),
                     Center(
