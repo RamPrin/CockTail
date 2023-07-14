@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import re
 from model.generator.reciper import query
 
 def ingredients_from_recipe(request, components):
@@ -21,13 +22,32 @@ def ingredients_from_recipe(request, components):
 
     while ing_ind < len(ingredients) and comp_ind < len(components):
         if ingredients[ing_ind][0].isnumeric():
-            response['ingredients'].append(
-                {
-                    'amount': ingredients[ing_ind],
-                    'measure': ingredients[ing_ind+1],
-                    'name': components[comp_ind]
-                }
-            )
+            print(ingredients[ing_ind])
+            if re.match(r'[0-9]+\.*[0-9]*$', ingredients[ing_ind]):
+                print('Matched')
+                response['ingredients'].append(
+                    {
+                        'amount': ingredients[ing_ind],
+                        'measure': ingredients[ing_ind+1],
+                        'name': components[comp_ind]
+                    }
+                )
+            else:
+                print('Not Matched')
+                am = ''
+                meas = ''
+                for i in range(len(ingredients[ing_ind])):
+                    if not ingredients[ing_ind][i].isnumeric():
+                        am = ingredients[ing_ind][:i]
+                        meas = ingredients[ing_ind][i:]
+                        break
+                response['ingredients'].append(
+                    {
+                        'amount': am,
+                        'measure': meas,
+                        'name': components[comp_ind]
+                    }
+                )
             comp_ind += 1
             ing_ind += 2
         else:
