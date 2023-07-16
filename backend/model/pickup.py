@@ -72,7 +72,7 @@ def main_pick_cocktail(alcohol_free_button,
     })
     components.append(ing[2])
   
-  result[0]['pic'] = query_image(components)
+  result[0]['img'] = query_image(components)
   return result
 
 def top():
