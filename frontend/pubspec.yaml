@@ -83,7 +83,9 @@ flutter:
     - assets/top_10.svg
     - assets/image_placeholder.png
     - assets/arrow.svg
-    - assets/top_cocktails.json
+    - assets/wine_load.gif
+    - assets/shake_load.gif
+    - assets/book_load.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

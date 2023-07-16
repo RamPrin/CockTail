@@ -7,6 +7,7 @@ import 'package:capstone/data/api/dio.dart';
 import 'package:capstone/domain/cocktail.dart';
 import 'package:capstone/domain/ingredient.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -57,7 +58,9 @@ class Api {
         options: Options(sendTimeout: const Duration(seconds: 10))));
     final json = resp.data;
 
-    return Image.memory(base64Decode(json['img']));
+    final img = compute<String,Image>((message) => Image.memory(base64Decode(message)), json['img']);
+
+    return img;
   }
 }
 

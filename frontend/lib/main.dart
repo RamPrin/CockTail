@@ -1,4 +1,3 @@
-import 'dart:html';
 
 import 'package:capstone/app.dart';
 import 'package:flutter/material.dart';

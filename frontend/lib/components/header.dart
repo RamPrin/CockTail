@@ -192,13 +192,25 @@ class DesktopHeader extends HookConsumerWidget {
                   ),
                   Expanded(child: SvgPicture.asset(pageAsset)),
                   Flexible(
-                    child: AnimatedButton(
-                      onTap: () => opened.value = true,
-                      child: const Icon(
-                        Icons.menu,
-                        color: Colors.white,
-                        size: 50,
-                      ),
+                    child: Stack(
+                      alignment: Alignment.centerRight,
+                      children: [
+                        Opacity(
+                          opacity: 0,
+                          child: Image.asset(
+                            Assets.logo,
+                            height: 100,
+                          ),
+                        ),
+                        AnimatedButton(
+                          onTap: () => opened.value = true,
+                          child: const Icon(
+                            Icons.menu,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

@@ -1,5 +1,6 @@
 import 'package:capstone/components/animated_button.dart';
 import 'package:capstone/components/cock_scaffold.dart';
+import 'package:capstone/components/error.dart';
 import 'package:capstone/core/assets/assets.dart';
 import 'package:capstone/core/navigation/routes.dart';
 import 'package:capstone/core/utils/expansions.dart';
@@ -8,7 +9,6 @@ import 'package:capstone/presentation/mix_screen/components/search_textfield.dar
 import 'package:capstone/presentation/mix_screen/state/notifier.dart';
 import 'package:capstone/presentation/mix_screen/state/state_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -24,17 +24,13 @@ class MixScreen extends HookConsumerWidget {
     return CockScaffold(
         pageAsset: Assets.mixUp,
         child: switch (state) {
-          Loading _ => const Center(
-              child: CircularProgressIndicator(color: Colors.white),
+          Loading _ => Center(
+              child: Image.asset(Assets.shakeLoad,height: 100,),
             ),
-          Error _ => const Center(
-              child: Text(
-                "Error",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 40,
-                ),
-              ),
+          Error _ => ErrorPage(
+              onRetry: () {
+                ref.read(mixScreenStateNotifierProvider.notifier).load();
+              },
             ),
           Data data => isMobile
               ? Column(
@@ -121,7 +117,7 @@ class MixScreen extends HookConsumerWidget {
                         Container(
                           height: 200,
                           decoration: BoxDecoration(
-                            color: Colors.transparent,
+                            color: const Color(0xFF1A1D1D).withOpacity(0.5),
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
                               color: Colors.white,
@@ -295,7 +291,8 @@ class MixScreen extends HookConsumerWidget {
                               Container(
                                 height: s,
                                 decoration: BoxDecoration(
-                                  color: Colors.transparent,
+                                  color:
+                                      const Color(0xFF1A1D1D).withOpacity(0.5),
                                   borderRadius: BorderRadius.circular(16),
                                   border: Border.all(
                                     color: Colors.white,

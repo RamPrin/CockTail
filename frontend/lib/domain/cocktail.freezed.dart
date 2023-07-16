@@ -24,6 +24,11 @@ mixin _$Cocktail {
   List<CocktailIngredient> get ingredients =>
       throw _privateConstructorUsedError;
   String get recipe => throw _privateConstructorUsedError;
+  @JsonKey(
+      name: "img",
+      fromJson: Cocktail.imageFromJson,
+      toJson: Cocktail.imageToJson)
+  Image? get image => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +41,12 @@ abstract class $CocktailCopyWith<$Res> {
   factory $CocktailCopyWith(Cocktail value, $Res Function(Cocktail) then) =
       _$CocktailCopyWithImpl<$Res, Cocktail>;
   @useResult
-  $Res call({String name, List<CocktailIngredient> ingredients, String recipe});
+  $Res call(
+      {String name,
+      List<CocktailIngredient> ingredients,
+      String recipe,
+      @JsonKey(name: "img", fromJson: Cocktail.imageFromJson, toJson: Cocktail.imageToJson)
+          Image? image});
 }
 
 /// @nodoc
@@ -55,6 +65,7 @@ class _$CocktailCopyWithImpl<$Res, $Val extends Cocktail>
     Object? name = null,
     Object? ingredients = null,
     Object? recipe = null,
+    Object? image = freezed,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -69,6 +80,10 @@ class _$CocktailCopyWithImpl<$Res, $Val extends Cocktail>
           ? _value.recipe
           : recipe // ignore: cast_nullable_to_non_nullable
               as String,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as Image?,
     ) as $Val);
   }
 }
@@ -80,7 +95,12 @@ abstract class _$$_CocktailCopyWith<$Res> implements $CocktailCopyWith<$Res> {
       __$$_CocktailCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, List<CocktailIngredient> ingredients, String recipe});
+  $Res call(
+      {String name,
+      List<CocktailIngredient> ingredients,
+      String recipe,
+      @JsonKey(name: "img", fromJson: Cocktail.imageFromJson, toJson: Cocktail.imageToJson)
+          Image? image});
 }
 
 /// @nodoc
@@ -97,6 +117,7 @@ class __$$_CocktailCopyWithImpl<$Res>
     Object? name = null,
     Object? ingredients = null,
     Object? recipe = null,
+    Object? image = freezed,
   }) {
     return _then(_$_Cocktail(
       name: null == name
@@ -111,6 +132,10 @@ class __$$_CocktailCopyWithImpl<$Res>
           ? _value.recipe
           : recipe // ignore: cast_nullable_to_non_nullable
               as String,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as Image?,
     ));
   }
 }
@@ -121,7 +146,9 @@ class _$_Cocktail implements _Cocktail {
   _$_Cocktail(
       {required this.name,
       required final List<CocktailIngredient> ingredients,
-      required this.recipe})
+      required this.recipe,
+      @JsonKey(name: "img", fromJson: Cocktail.imageFromJson, toJson: Cocktail.imageToJson)
+          this.image})
       : _ingredients = ingredients;
 
   factory _$_Cocktail.fromJson(Map<String, dynamic> json) =>
@@ -139,10 +166,16 @@ class _$_Cocktail implements _Cocktail {
 
   @override
   final String recipe;
+  @override
+  @JsonKey(
+      name: "img",
+      fromJson: Cocktail.imageFromJson,
+      toJson: Cocktail.imageToJson)
+  final Image? image;
 
   @override
   String toString() {
-    return 'Cocktail(name: $name, ingredients: $ingredients, recipe: $recipe)';
+    return 'Cocktail(name: $name, ingredients: $ingredients, recipe: $recipe, image: $image)';
   }
 
   @override
@@ -153,13 +186,14 @@ class _$_Cocktail implements _Cocktail {
             (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality()
                 .equals(other._ingredients, _ingredients) &&
-            (identical(other.recipe, recipe) || other.recipe == recipe));
+            (identical(other.recipe, recipe) || other.recipe == recipe) &&
+            (identical(other.image, image) || other.image == image));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, name,
-      const DeepCollectionEquality().hash(_ingredients), recipe);
+      const DeepCollectionEquality().hash(_ingredients), recipe, image);
 
   @JsonKey(ignore: true)
   @override
@@ -179,7 +213,9 @@ abstract class _Cocktail implements Cocktail {
   factory _Cocktail(
       {required final String name,
       required final List<CocktailIngredient> ingredients,
-      required final String recipe}) = _$_Cocktail;
+      required final String recipe,
+      @JsonKey(name: "img", fromJson: Cocktail.imageFromJson, toJson: Cocktail.imageToJson)
+          final Image? image}) = _$_Cocktail;
 
   factory _Cocktail.fromJson(Map<String, dynamic> json) = _$_Cocktail.fromJson;
 
@@ -189,6 +225,12 @@ abstract class _Cocktail implements Cocktail {
   List<CocktailIngredient> get ingredients;
   @override
   String get recipe;
+  @override
+  @JsonKey(
+      name: "img",
+      fromJson: Cocktail.imageFromJson,
+      toJson: Cocktail.imageToJson)
+  Image? get image;
   @override
   @JsonKey(ignore: true)
   _$$_CocktailCopyWith<_$_Cocktail> get copyWith =>

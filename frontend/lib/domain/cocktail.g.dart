@@ -12,6 +12,7 @@ _$_Cocktail _$$_CocktailFromJson(Map<String, dynamic> json) => _$_Cocktail(
           .map((e) => CocktailIngredient.fromJson(e as Map<String, dynamic>))
           .toList(),
       recipe: json['recipe'] as String,
+      image: Cocktail.imageFromJson(json['img'] as String?),
     );
 
 Map<String, dynamic> _$$_CocktailToJson(_$_Cocktail instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$$_CocktailToJson(_$_Cocktail instance) =>
       'name': instance.name,
       'ingredients': instance.ingredients,
       'recipe': instance.recipe,
+      'img': Cocktail.imageToJson(instance.image),
     };

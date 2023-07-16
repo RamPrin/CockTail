@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:capstone/components/animated_button.dart';
 import 'package:capstone/components/clickable_text.dart';
 import 'package:capstone/core/assets/assets.dart';
@@ -9,15 +11,18 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CocktailItem extends HookConsumerWidget {
-  const CocktailItem(
-      {super.key,
-      required this.cocktail,
-      this.image,
-      this.fillImageWithPlaceholder = true});
+  const CocktailItem({
+    super.key,
+    required this.cocktail,
+    this.image,
+    this.fillImageWithPlaceholder = true,
+    this.height,
+  });
 
   final Cocktail cocktail;
   final Image? image;
   final bool fillImageWithPlaceholder;
+  final double? height;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -237,49 +242,81 @@ class CocktailItem extends HookConsumerWidget {
             children: [
               Flexible(
                 flex: 20,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white, width: 3),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: fillImageWithPlaceholder
-                          ? Image.asset(
-                              Assets.placeholder,
-                              fit: BoxFit.fill,
-                            )
-                          : image == null
-                              ? const Padding(
-                                  padding: EdgeInsets.all(50),
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                  ),
+                child: LayoutBuilder(builder: (context, constraints) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        height: (height == null
+                            ? 500
+                            : max(
+                                height! -
+                                    _textSize(
+                                        cocktail.name,
+                                        const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 40,
+                                          fontFamily: Fonts.carterOne,
+                                        ),
+                                        constraints.maxWidth) -
+                                    10,
+                                0)),
+                        width: height == null
+                            ? 500
+                            : max(
+                                height! -
+                                    _textSize(
+                                        cocktail.name,
+                                        const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 40,
+                                          fontFamily: Fonts.carterOne,
+                                        ),
+                                        constraints.maxWidth) -
+                                    10,
+                                0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white, width: 3),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: fillImageWithPlaceholder
+                              ? Image.asset(
+                                  Assets.placeholder,
+                                  fit: BoxFit.fill,
                                 )
-                              : ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Image(
-                                    image: image!.image,
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      cocktail.name,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 40,
-                        fontFamily: Fonts.carterOne,
+                              : image == null
+                                  ? const Padding(
+                                      padding: EdgeInsets.all(50),
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image(
+                                        image: image!.image,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                        ),
                       ),
-                      textAlign: TextAlign.center,
-                    )
-                  ],
-                ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        cocktail.name,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 40,
+                          fontFamily: Fonts.carterOne,
+                        ),
+                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  );
+                }),
               ),
               const Spacer(
                 flex: 5,
@@ -380,7 +417,20 @@ class CocktailItem extends HookConsumerWidget {
                       ],
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(vertical: 50),
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      height: height == null
+                          ? null
+                          : height! -
+                              _textSize(
+                                "Ingredients",
+                                const TextStyle(
+                                  color: Colors.white,
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 30,
+                                ),
+                                double.infinity,
+                              ) -
+                              20,
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: 3,
@@ -394,59 +444,61 @@ class CocktailItem extends HookConsumerWidget {
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(10),
-                          child: page.value == _Page.ingredients
-                              ? Column(
-                                  children: cocktail.ingredients
-                                      .map(
-                                        (item) => Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 5),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Container(
-                                                width: 5,
-                                                height: 5,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          100),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              ClickableText(
-                                                "${item.amount.toString()} ${item.measure} ${item.name}",
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 24,
-                                                  fontStyle: FontStyle.italic,
-                                                ),
-                                                onTap: (text) => launchUrl(
-                                                  Uri.https(
-                                                    'www.google.com',
-                                                    '/search',
-                                                    {'q': item.name},
+                          child: SingleChildScrollView(
+                            child: page.value == _Page.ingredients
+                                ? Column(
+                                    children: cocktail.ingredients
+                                        .map(
+                                          (item) => Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 5),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Container(
+                                                  width: 5,
+                                                  height: 5,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            100),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                ClickableText(
+                                                  "${item.amount.toString()} ${item.measure} ${item.name}",
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 24,
+                                                    fontStyle: FontStyle.italic,
+                                                  ),
+                                                  onTap: (text) => launchUrl(
+                                                    Uri.https(
+                                                      'www.google.com',
+                                                      '/search',
+                                                      {'q': item.name},
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      )
-                                      .toList(),
-                                )
-                              : Text(
-                                  cocktail.recipe,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
+                                        )
+                                        .toList(),
+                                  )
+                                : Text(
+                                    cocktail.recipe,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                    ),
                                   ),
-                                ),
+                          ),
                         ),
                       ),
                     ),
@@ -455,6 +507,14 @@ class CocktailItem extends HookConsumerWidget {
               ),
             ],
           );
+  }
+
+  double _textSize(String text, TextStyle style, double maxWidth) {
+    final TextPainter textPainter = TextPainter(
+        text: TextSpan(text: text, style: style),
+        textDirection: TextDirection.ltr)
+      ..layout(minWidth: 0, maxWidth: maxWidth);
+    return textPainter.size.height;
   }
 }
 

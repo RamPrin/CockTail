@@ -1,6 +1,7 @@
 import 'package:capstone/components/animated_button.dart';
 import 'package:capstone/components/background.dart';
 import 'package:capstone/components/cocktail.dart';
+import 'package:capstone/components/error.dart';
 import 'package:capstone/components/header.dart';
 import 'package:capstone/core/assets/assets.dart';
 import 'package:capstone/core/utils/expansions.dart';
@@ -12,7 +13,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class TopScreen extends HookConsumerWidget {
-  TopScreen({super.key});
+  const TopScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,41 +41,38 @@ class TopScreen extends HookConsumerWidget {
                 pageAsset: Assets.top10,
               ),
               ...switch (state) {
-                Loading _ => [
-                    const CircularProgressIndicator(
-                      color: Colors.white,
-                    )
-                  ],
-                Error _ => const [
-                    Text(
-                      "Error",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                Loading _ => [Image.asset(Assets.bookLoad,height: 100,)],
+                Error _ => [
+                    ErrorPage(
+                      onRetry: () {
+                        ref
+                            .read(topScreenStateNotifierProvider.notifier)
+                            .load();
+                      },
                     )
                   ],
                 Data data => [
                     Expanded(
-                      child: PageView.builder(
-                        controller: controller,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: data.cocktails.length,
-                        itemBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 100),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CocktailItem(
-                                cocktail: data.cocktails[index],
-                                fillImageWithPlaceholder: false,
-                                image: data.images.containsKey(index)
-                                    ? data.images[index]
-                                    : null,
-                              ),
-                            ],
+                      child: LayoutBuilder(builder: (context, constraints) {
+                        print("meow" + constraints.maxHeight.toString());
+                        return PageView.builder(
+                          controller: controller,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: data.cocktails.length,
+                          itemBuilder: (context, index) => Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 100),
+                            child: CocktailItem(
+                              cocktail: data.cocktails[index],
+                              fillImageWithPlaceholder: false,
+                              image: data.images.containsKey(index)
+                                  ? data.images[index]
+                                  : null,
+                              height: constraints.maxHeight,
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      }),
                     ),
                     Center(
                       child: SizedBox(
