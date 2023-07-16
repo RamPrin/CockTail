@@ -13,7 +13,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class TopScreen extends HookConsumerWidget {
-  TopScreen({super.key});
+  const TopScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,11 +41,7 @@ class TopScreen extends HookConsumerWidget {
                 pageAsset: Assets.top10,
               ),
               ...switch (state) {
-                Loading _ => [
-                    const CircularProgressIndicator(
-                      color: Colors.white,
-                    )
-                  ],
+                Loading _ => [Image.asset(Assets.bookLoad,height: 100,)],
                 Error _ => [
                     ErrorPage(
                       onRetry: () {
@@ -57,27 +53,26 @@ class TopScreen extends HookConsumerWidget {
                   ],
                 Data data => [
                     Expanded(
-                      child: LayoutBuilder(
-                        builder: (context,constraints) {
-                          print("meow"+constraints.maxHeight.toString());
-                          return PageView.builder(
-                            controller: controller,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: data.cocktails.length,
-                            itemBuilder: (context, index) => Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 100),
-                              child: CocktailItem(
-                                cocktail: data.cocktails[index],
-                                fillImageWithPlaceholder: false,
-                                image: data.images.containsKey(index)
-                                    ? data.images[index]
-                                    : null,
-                                    height: constraints.maxHeight,
-                              ),
+                      child: LayoutBuilder(builder: (context, constraints) {
+                        print("meow" + constraints.maxHeight.toString());
+                        return PageView.builder(
+                          controller: controller,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: data.cocktails.length,
+                          itemBuilder: (context, index) => Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 100),
+                            child: CocktailItem(
+                              cocktail: data.cocktails[index],
+                              fillImageWithPlaceholder: false,
+                              image: data.images.containsKey(index)
+                                  ? data.images[index]
+                                  : null,
+                              height: constraints.maxHeight,
                             ),
-                          );
-                        }
-                      ),
+                          ),
+                        );
+                      }),
                     ),
                     Center(
                       child: SizedBox(

@@ -11,12 +11,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CocktailItem extends HookConsumerWidget {
-  const CocktailItem(
-      {super.key,
-      required this.cocktail,
-      this.image,
-      this.fillImageWithPlaceholder = true,
-      this.height});
+  const CocktailItem({
+    super.key,
+    required this.cocktail,
+    this.image,
+    this.fillImageWithPlaceholder = true,
+    this.height,
+  });
 
   final Cocktail cocktail;
   final Image? image;
@@ -247,7 +248,7 @@ class CocktailItem extends HookConsumerWidget {
                     children: [
                       Container(
                         height: (height == null
-                            ? null
+                            ? 500
                             : max(
                                 height! -
                                     _textSize(
@@ -261,7 +262,7 @@ class CocktailItem extends HookConsumerWidget {
                                     10,
                                 0)),
                         width: height == null
-                            ? null
+                            ? 500
                             : max(
                                 height! -
                                     _textSize(
@@ -278,25 +279,28 @@ class CocktailItem extends HookConsumerWidget {
                           border: Border.all(color: Colors.white, width: 3),
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        child: fillImageWithPlaceholder
-                            ? Image.asset(
-                                Assets.placeholder,
-                                fit: BoxFit.fill,
-                              )
-                            : image == null
-                                ? const Padding(
-                                    padding: EdgeInsets.all(50),
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: fillImageWithPlaceholder
+                              ? Image.asset(
+                                  Assets.placeholder,
+                                  fit: BoxFit.fill,
+                                )
+                              : image == null
+                                  ? const Padding(
+                                      padding: EdgeInsets.all(50),
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image(
+                                        image: image!.image,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ),
-                                  )
-                                : ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Image(
-                                      image: image!.image,
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
+                        ),
                       ),
                       const SizedBox(
                         height: 10,
@@ -425,7 +429,8 @@ class CocktailItem extends HookConsumerWidget {
                                   fontSize: 30,
                                 ),
                                 double.infinity,
-                              ) - 20,
+                              ) -
+                              20,
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: 3,

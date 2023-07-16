@@ -23,18 +23,23 @@ class MixResultScreen extends ConsumerWidget {
     return CockScaffold(
       pageAsset: Assets.mixUp,
       child: switch (state) {
-        Loading _ => const Center(
-            child: CircularProgressIndicator(color: Colors.white),
+        Loading _ => Center(
+            child: Image.asset(
+              Assets.shakeLoad,
+              height: 100,
+            ),
           ),
         Error _ => ErrorPage(
-              onRetry: () {
-                ref.read(mixResultStateNotifierProvider(request).notifier).load();
-              },
-            ),
+            onRetry: () {
+              ref.read(mixResultStateNotifierProvider(request).notifier).load();
+            },
+          ),
         Data data => Column(
             children: [
               CocktailItem(
                 cocktail: data.cocktail,
+                image: data.cocktail.image,
+                fillImageWithPlaceholder: false,
               ),
               const SizedBox(
                 height: 50,

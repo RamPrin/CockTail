@@ -11,33 +11,34 @@ class TopScreenStateNotifier extends StateNotifier<TopScreenState> {
   final Api api;
 
   Future<void> load() async {
+    state = TopScreenState.loading();
     try {
       final cocktails = await api.getTopCocktails();
-      state = TopScreenState.data(cocktails: cocktails);
+      final imagesMap = <int, Image>{};
+      try {
+        final imgs = await Future.wait(
+          cocktails.indexed.map((element) => loadImage(element.$1)),
+          cleanUp: (successValue) =>
+              imagesMap[successValue.$1] = successValue.$2,
+        );
+        for (var element in imgs) {
+          imagesMap[element.$1] = element.$2;
+        }
+      } catch (_) {
+      } finally {
+        state = TopScreenState.data(
+          cocktails: cocktails,
+          images: imagesMap,
+        );
+      }
     } catch (e) {
       print(e.toString());
       state = TopScreenState.error();
     }
-    if (state is Data) {
-      for (int i = 0; i < (state as Data).cocktails.length; i++) {
-        loadImage(i);
-      }
-    }
   }
 
-  Future<void> loadImage(int id) async {
-    print("loading $id");
-    try {
-      final img = await api.getTopCocktailImage(id);
-
-      final oldImages = (state as Data).images;
-      final newImages = Map<int, Image>.from(oldImages);
-      newImages[id] = img;
-
-      state = (state as Data).copyWith(images: newImages);
-    } catch (e) {
-      print(e.toString());
-    }
+  Future<(int, Image)> loadImage(int id) async {
+    return (id, await api.getTopCocktailImage(id));
   }
 }
 

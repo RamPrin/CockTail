@@ -23,18 +23,25 @@ class PickResultScreen extends ConsumerWidget {
     return CockScaffold(
       pageAsset: Assets.pickUp,
       child: switch (state) {
-        Loading _ => const Center(
-            child: CircularProgressIndicator(color: Colors.white),
+        Loading _ => Center(
+            child: Image.asset(
+              Assets.wineLoad,
+              height: 100,
+            ),
           ),
         Error _ => ErrorPage(
-              onRetry: () {
-                ref.read(pickResultStateNotifierProvider(request).notifier).load();
-              },
-            ),
+            onRetry: () {
+              ref
+                  .read(pickResultStateNotifierProvider(request).notifier)
+                  .load();
+            },
+          ),
         Data data => Column(
             children: [
               CocktailItem(
                 cocktail: data.cocktail,
+                fillImageWithPlaceholder: false,
+                image: data.cocktail.image,
               ),
               const SizedBox(
                 height: 50,
