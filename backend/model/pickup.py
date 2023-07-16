@@ -1,6 +1,7 @@
+import base64
 import pandas as pd
 from scipy import spatial
-import base64
+from model.generator.infer import query_image
 
 def init_pickup(table: str, top: str):
   global df, cocktail_list, topper
@@ -50,27 +51,28 @@ def main_pick_cocktail(alcohol_free_button,
 
   variation_list.sort(key= lambda x : spatial.distance.cosine(user_taste, x[0]))
 
-  ids = []
-  for i in variation_list[:10]:
-    ids.append(i[1])
+  id = variation_list[0][1]
   result = []
+  components = []
+  st = df.iloc[id, [0,5,3,2]].to_list()
+  recipe = split_ingredients(st[1])
+  result.append(
+      {
+        'name': st[0],
+        'ingredients':[],
+        "recipe": f'Recipe: {st[2]}\nGarnish: {st[3]}'
+      }
+  )
 
-  for id in ids:
-    st = df.iloc[id, [0,5,3,2]].to_list()
-    recipe = split_ingredients(st[1])
-    result.append(
-        {
-          'name': st[0],
-          'ingredients':[
-              {
-                  'amount': ing[0],
-                  'measure': ing[1],
-                  'name': ing[2]
-              } for ing in recipe
-          ],
-          "recipe": f'Recipe: {st[2]}\nGarnish: {st[3]}'
-        }
-    )
+  for ing in recipe:
+    result[0]['ingredients'].append({
+      'amount': ing[0],
+      'measure': ing[1],
+      'name': ing[2]
+    })
+    components.append(ing[2])
+  
+  result[0]['pic'] = query_image(components)
   return result
 
 def top():

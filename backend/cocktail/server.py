@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, Response
 from model.mixup import ImpruvedCocktailGenerator
 from model.pickup import init_pickup, main_pick_cocktail, top, top_img
 
@@ -50,18 +50,8 @@ def mixup_res(start: StartMix):
         recipe = generator.launch(start.include, start.exclude)
         return recipe
     except Exception as e:
-        print(e)
-        return {
-                "name": "NDA",
-                "ingredients": [
-                        {
-                            "amount": 0,
-                            "measure": "NDA",
-                            "name": "NDA"
-                        }
-                ],
-                "recipe": "NDA"
-        }
+        print('server.py', e)
+        return Response(status_code=500)
 
 @server.post("/pickup/result")
 def pickup_res(data:StartPick):

@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import re
 from concurrent.futures import ThreadPoolExecutor
-
+from fastapi.responses import Response
 from model.generator.reciper import query
 from model.generator.infer import query_image
 
@@ -157,17 +157,7 @@ class ImpruvedCocktailGenerator():
             return ingredients_from_recipe(self.cocktail.cocktail_components())
         except Exception as e:
             print('mixup.py',e)
-            return {
-                "name": "#1",
-                "ingredients":[
-                    {
-                        "amount": '0',
-                        "measure": "cl", 
-                        "name": name
-                    } for name in self.cocktail.cocktail_components()
-                ],
-                "recipe": "SHAKE all the ingredients."
-            }
+            return Response(status_code=500)
 
     def ingredients(self):
         return self.prob_table.columns.to_list()
