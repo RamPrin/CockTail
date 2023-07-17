@@ -55,7 +55,7 @@ class Api {
 
   Future<Image> getTopCocktailImage(int id) async {
     final resp = (await dio.get("${ApiConsts.top}/$id",
-        options: Options(sendTimeout: const Duration(seconds: 10))));
+        options: Options(receiveTimeout: const Duration(seconds: 10))));
     final json = resp.data;
 
     final img = compute<String,Image>((message) => Image.memory(base64Decode(message)), json['img']);

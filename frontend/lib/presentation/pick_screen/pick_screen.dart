@@ -23,10 +23,10 @@ class PickScreen extends HookConsumerWidget {
     final maxStrength = useState(30.0);
     final alcoholFree = useState(false);
 
-    final sweet = useState(1);
-    final sour = useState(1);
-    final savory = useState(1);
-    final bitter = useState(1);
+    final sweet = useState(5);
+    final sour = useState(5);
+    final savory = useState(5);
+    final bitter = useState(5);
 
     final creamy = useState(false);
     final spicy = useState(false);
@@ -354,24 +354,28 @@ class PickScreen extends HookConsumerWidget {
                   children: [
                     CockSlider(
                       label: "Sweet",
+                      initialValue: sweet.value,
                       onChanged: (int value) {
                         sweet.value = value;
                       },
                     ),
                     CockSlider(
                       label: "Sour",
+                      initialValue: sour.value,
                       onChanged: (int value) {
                         sour.value = value;
                       },
                     ),
                     CockSlider(
                       label: "Savory",
+                      initialValue: savory.value,
                       onChanged: (int value) {
                         savory.value = value;
                       },
                     ),
                     CockSlider(
                       label: "Bitter",
+                      initialValue: bitter.value,
                       onChanged: (int value) {
                         bitter.value = value;
                       },

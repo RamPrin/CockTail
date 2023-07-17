@@ -5,7 +5,9 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class CockSlider extends HookConsumerWidget {
-  const CockSlider({super.key, required this.onChanged,required this.label});
+  const CockSlider({super.key, required this.onChanged,required this.label,this.initialValue = 5});
+
+  final int initialValue;
 
   final Function(int value) onChanged;
 
@@ -13,7 +15,7 @@ class CockSlider extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final value = useState(5.0);
+    final value = useState(initialValue);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
