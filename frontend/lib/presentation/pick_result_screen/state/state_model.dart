@@ -8,10 +8,16 @@ part 'state_model.g.dart';
 @freezed
 sealed class PickResultState with _$PickResultState {
   factory PickResultState.loading() = Loading;
-  factory PickResultState.error() = Error;
+  factory PickResultState.error({
+    @Default(PickResultErrorReason.serverError)
+    PickResultErrorReason errorReason,
+  }) = Error;
   factory PickResultState.data({
     required Cocktail cocktail,
   }) = Data;
 
-  factory PickResultState.fromJson(Map<String, dynamic> json) =>_$PickResultStateFromJson(json);
+  factory PickResultState.fromJson(Map<String, dynamic> json) =>
+      _$PickResultStateFromJson(json);
 }
+
+enum PickResultErrorReason { nothingFound, serverError }

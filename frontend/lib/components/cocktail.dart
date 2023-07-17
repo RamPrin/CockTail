@@ -247,60 +247,61 @@ class CocktailItem extends HookConsumerWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        height: (height == null
+                        height: height == null
                             ? 500
-                            : max(
-                                height! -
-                                    _textSize(
-                                        cocktail.name,
-                                        const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 40,
-                                          fontFamily: Fonts.carterOne,
-                                        ),
-                                        constraints.maxWidth) -
-                                    10,
-                                0)),
+                            : min(
+                                constraints.maxWidth,
+                                max(
+                                    height! -
+                                        _textSize(
+                                            cocktail.name,
+                                            const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 40,
+                                              fontFamily: Fonts.carterOne,
+                                            ),
+                                            constraints.maxWidth) -
+                                        10,
+                                    0)),
                         width: height == null
                             ? 500
-                            : max(
-                                height! -
-                                    _textSize(
-                                        cocktail.name,
-                                        const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 40,
-                                          fontFamily: Fonts.carterOne,
-                                        ),
-                                        constraints.maxWidth) -
-                                    10,
-                                0),
+                            : min(
+                                constraints.maxWidth,
+                                max(
+                                    height! -
+                                        _textSize(
+                                            cocktail.name,
+                                            const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 40,
+                                              fontFamily: Fonts.carterOne,
+                                            ),
+                                            constraints.maxWidth) -
+                                        10,
+                                    0)),
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.white, width: 3),
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        child: AspectRatio(
-                          aspectRatio: 1,
-                          child: fillImageWithPlaceholder
-                              ? Image.asset(
-                                  Assets.placeholder,
-                                  fit: BoxFit.fill,
-                                )
-                              : image == null
-                                  ? const Padding(
-                                      padding: EdgeInsets.all(50),
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : ClipRRect(
-                                      borderRadius: BorderRadius.circular(12),
-                                      child: Image(
-                                        image: image!.image,
-                                        fit: BoxFit.fill,
-                                      ),
+                        child: fillImageWithPlaceholder
+                            ? Image.asset(
+                                Assets.placeholder,
+                                fit: BoxFit.fill,
+                              )
+                            : image == null
+                                ? const Padding(
+                                    padding: EdgeInsets.all(50),
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
                                     ),
-                        ),
+                                  )
+                                : ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Image(
+                                      image: image!.image,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
                       ),
                       const SizedBox(
                         height: 10,
@@ -313,7 +314,7 @@ class CocktailItem extends HookConsumerWidget {
                           fontFamily: Fonts.carterOne,
                         ),
                         textAlign: TextAlign.center,
-                      )
+                      ),
                     ],
                   );
                 }),

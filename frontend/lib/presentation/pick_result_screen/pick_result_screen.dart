@@ -5,8 +5,8 @@ import 'package:capstone/components/error.dart';
 import 'package:capstone/core/assets/assets.dart';
 import 'package:capstone/core/navigation/routes.dart';
 import 'package:capstone/data/api/api_models/pick_up_result_request.dart';
-import 'package:capstone/presentation/pick_result_screen%20copy/state/notifier.dart';
-import 'package:capstone/presentation/pick_result_screen%20copy/state/state_model.dart';
+import 'package:capstone/presentation/pick_result_screen/state/notifier.dart';
+import 'package:capstone/presentation/pick_result_screen/state/state_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -29,11 +29,21 @@ class PickResultScreen extends ConsumerWidget {
               height: 100,
             ),
           ),
-        Error _ => ErrorPage(
+        Error e => ErrorPage(
+            errorText: e.errorReason == PickResultErrorReason.nothingFound
+                ? "Sorry, but we could not create a cocktail. Please, try different filters."
+                : null,
+            retryText: e.errorReason == PickResultErrorReason.nothingFound
+                ? "Try another filters"
+                : null,
             onRetry: () {
-              ref
-                  .read(pickResultStateNotifierProvider(request).notifier)
-                  .load();
+              if (e.errorReason == PickResultErrorReason.nothingFound) {
+                context.goNamed(Routes.pickPage);
+              } else {
+                ref
+                    .read(pickResultStateNotifierProvider(request).notifier)
+                    .load();
+              }
             },
           ),
         Data data => Column(

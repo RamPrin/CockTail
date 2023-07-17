@@ -1,6 +1,6 @@
 import 'package:capstone/data/api/api.dart';
 import 'package:capstone/data/api/api_models/pick_up_result_request.dart';
-import 'package:capstone/presentation/pick_result_screen%20copy/state/state_model.dart';
+import 'package:capstone/presentation/pick_result_screen/state/state_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PickResultStateNotifier extends StateNotifier<PickResultState> {
@@ -17,6 +17,9 @@ class PickResultStateNotifier extends StateNotifier<PickResultState> {
     try {
       final cocktail = await api.pickUpCocktail(request);
       state = PickResultState.data(cocktail: cocktail);
+    } on PickResultErrorReason {
+      state = PickResultState.error(
+          errorReason: PickResultErrorReason.nothingFound);
     } catch (e) {
       print(e.toString());
       state = PickResultState.error();

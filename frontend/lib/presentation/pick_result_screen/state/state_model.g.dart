@@ -15,12 +15,21 @@ Map<String, dynamic> _$$LoadingToJson(_$Loading instance) => <String, dynamic>{
     };
 
 _$Error _$$ErrorFromJson(Map<String, dynamic> json) => _$Error(
+      errorReason: $enumDecodeNullable(
+              _$PickResultErrorReasonEnumMap, json['errorReason']) ??
+          PickResultErrorReason.serverError,
       $type: json['runtimeType'] as String?,
     );
 
 Map<String, dynamic> _$$ErrorToJson(_$Error instance) => <String, dynamic>{
+      'errorReason': _$PickResultErrorReasonEnumMap[instance.errorReason]!,
       'runtimeType': instance.$type,
     };
+
+const _$PickResultErrorReasonEnumMap = {
+  PickResultErrorReason.nothingFound: 'nothingFound',
+  PickResultErrorReason.serverError: 'serverError',
+};
 
 _$Data _$$DataFromJson(Map<String, dynamic> json) => _$Data(
       cocktail: Cocktail.fromJson(json['cocktail'] as Map<String, dynamic>),

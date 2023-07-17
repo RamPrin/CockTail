@@ -4,7 +4,7 @@ import 'package:capstone/data/api/api_models/pick_up_result_request.dart';
 import 'package:capstone/presentation/home_screen.dart';
 import 'package:capstone/presentation/mix_result_screen/mix_result_screen.dart';
 import 'package:capstone/presentation/mix_screen/mix_screen.dart';
-import 'package:capstone/presentation/pick_result_screen%20copy/pick_result_screen.dart';
+import 'package:capstone/presentation/pick_result_screen/pick_result_screen.dart';
 import 'package:capstone/presentation/pick_screen/pick_screen.dart';
 import 'package:capstone/presentation/top_screen/top_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -46,7 +46,8 @@ final router = GoRouter(
         GoRoute(
           path: Routes.topPage,
           name: Routes.topPage,
-          pageBuilder: (context, state) => NoTransitionPage(child: TopScreen()),
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: TopScreen()),
         ),
         GoRoute(
           path: Routes.pickPage,

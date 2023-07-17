@@ -6,6 +6,7 @@ import 'package:capstone/data/api/api_models/pick_up_result_request.dart';
 import 'package:capstone/data/api/dio.dart';
 import 'package:capstone/domain/cocktail.dart';
 import 'package:capstone/domain/ingredient.dart';
+import 'package:capstone/presentation/pick_result_screen/state/state_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -40,8 +41,12 @@ class Api {
       ApiConsts.pickUpResult,
       data: jsonEncode(request.toJson()),
     ));
+
+    if (resp.statusCode == 404) {
+      throw PickResultErrorReason.nothingFound;
+    }
     final json = resp.data;
-    return Cocktail.fromJson(json['cocktails'][0]);
+    return Cocktail.fromJson(json);
   }
 
   Future<List<Cocktail>> getTopCocktails() async {
@@ -58,7 +63,8 @@ class Api {
         options: Options(receiveTimeout: const Duration(seconds: 10))));
     final json = resp.data;
 
-    final img = compute<String,Image>((message) => Image.memory(base64Decode(message)), json['img']);
+    final img = compute<String, Image>(
+        (message) => Image.memory(base64Decode(message)), json['img']);
 
     return img;
   }

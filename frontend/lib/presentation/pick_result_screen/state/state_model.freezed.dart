@@ -34,21 +34,21 @@ mixin _$PickResultState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function() error,
+    required TResult Function(PickResultErrorReason errorReason) error,
     required TResult Function(Cocktail cocktail) data,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function()? error,
+    TResult? Function(PickResultErrorReason errorReason)? error,
     TResult? Function(Cocktail cocktail)? data,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? error,
+    TResult Function(PickResultErrorReason errorReason)? error,
     TResult Function(Cocktail cocktail)? data,
     required TResult orElse(),
   }) =>
@@ -140,7 +140,7 @@ class _$Loading implements Loading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function() error,
+    required TResult Function(PickResultErrorReason errorReason) error,
     required TResult Function(Cocktail cocktail) data,
   }) {
     return loading();
@@ -150,7 +150,7 @@ class _$Loading implements Loading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function()? error,
+    TResult? Function(PickResultErrorReason errorReason)? error,
     TResult? Function(Cocktail cocktail)? data,
   }) {
     return loading?.call();
@@ -160,7 +160,7 @@ class _$Loading implements Loading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? error,
+    TResult Function(PickResultErrorReason errorReason)? error,
     TResult Function(Cocktail cocktail)? data,
     required TResult orElse(),
   }) {
@@ -222,6 +222,8 @@ abstract class Loading implements PickResultState {
 abstract class _$$ErrorCopyWith<$Res> {
   factory _$$ErrorCopyWith(_$Error value, $Res Function(_$Error) then) =
       __$$ErrorCopyWithImpl<$Res>;
+  @useResult
+  $Res call({PickResultErrorReason errorReason});
 }
 
 /// @nodoc
@@ -230,63 +232,92 @@ class __$$ErrorCopyWithImpl<$Res>
     implements _$$ErrorCopyWith<$Res> {
   __$$ErrorCopyWithImpl(_$Error _value, $Res Function(_$Error) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? errorReason = null,
+  }) {
+    return _then(_$Error(
+      errorReason: null == errorReason
+          ? _value.errorReason
+          : errorReason // ignore: cast_nullable_to_non_nullable
+              as PickResultErrorReason,
+    ));
+  }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$Error implements Error {
-  _$Error({final String? $type}) : $type = $type ?? 'error';
+  _$Error(
+      {this.errorReason = PickResultErrorReason.serverError,
+      final String? $type})
+      : $type = $type ?? 'error';
 
   factory _$Error.fromJson(Map<String, dynamic> json) => _$$ErrorFromJson(json);
+
+  @override
+  @JsonKey()
+  final PickResultErrorReason errorReason;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'PickResultState.error()';
+    return 'PickResultState.error(errorReason: $errorReason)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$Error);
+        (other.runtimeType == runtimeType &&
+            other is _$Error &&
+            (identical(other.errorReason, errorReason) ||
+                other.errorReason == errorReason));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, errorReason);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ErrorCopyWith<_$Error> get copyWith =>
+      __$$ErrorCopyWithImpl<_$Error>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function() error,
+    required TResult Function(PickResultErrorReason errorReason) error,
     required TResult Function(Cocktail cocktail) data,
   }) {
-    return error();
+    return error(errorReason);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function()? error,
+    TResult? Function(PickResultErrorReason errorReason)? error,
     TResult? Function(Cocktail cocktail)? data,
   }) {
-    return error?.call();
+    return error?.call(errorReason);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? error,
+    TResult Function(PickResultErrorReason errorReason)? error,
     TResult Function(Cocktail cocktail)? data,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error();
+      return error(errorReason);
     }
     return orElse();
   }
@@ -334,9 +365,13 @@ class _$Error implements Error {
 }
 
 abstract class Error implements PickResultState {
-  factory Error() = _$Error;
+  factory Error({final PickResultErrorReason errorReason}) = _$Error;
 
   factory Error.fromJson(Map<String, dynamic> json) = _$Error.fromJson;
+
+  PickResultErrorReason get errorReason;
+  @JsonKey(ignore: true)
+  _$$ErrorCopyWith<_$Error> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -420,7 +455,7 @@ class _$Data implements Data {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function() error,
+    required TResult Function(PickResultErrorReason errorReason) error,
     required TResult Function(Cocktail cocktail) data,
   }) {
     return data(cocktail);
@@ -430,7 +465,7 @@ class _$Data implements Data {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function()? error,
+    TResult? Function(PickResultErrorReason errorReason)? error,
     TResult? Function(Cocktail cocktail)? data,
   }) {
     return data?.call(cocktail);
@@ -440,7 +475,7 @@ class _$Data implements Data {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? error,
+    TResult Function(PickResultErrorReason errorReason)? error,
     TResult Function(Cocktail cocktail)? data,
     required TResult orElse(),
   }) {
