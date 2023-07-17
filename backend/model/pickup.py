@@ -56,7 +56,6 @@ def main_pick_cocktail(alcohol_free_button,
   id = variation_list[0][1]
   components = []
   st = df.iloc[id, [0,5,3,2]].to_list()
-  print(st)
   recipe = split_ingredients(st[1])
   result = {
         'name': st[0],
