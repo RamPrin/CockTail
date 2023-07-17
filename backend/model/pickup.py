@@ -65,7 +65,7 @@ def main_pick_cocktail(alcohol_free_button,
       }
 
   for ing in recipe:
-    if re.match(r'[0-9]*\.*[0-9]*', ing[0]):
+    if re.match(r'[0-9]+\.*[0-9]*', ing[0]):
       result['ingredients'].append({
         'amount': ing[0],
         'measure': ing[1],
