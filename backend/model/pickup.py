@@ -1,7 +1,9 @@
 import base64
 import pandas as pd
-from scipy import spatial
+import re
+from fastapi.responses import Response
 from model.generator.infer import query_image
+from scipy import spatial
 
 def init_pickup(table: str, top: str):
   global df, cocktail_list, topper
@@ -47,32 +49,31 @@ def main_pick_cocktail(alcohol_free_button,
     if (i.check_alco(min_alc, max_alc)):
       variation_list.append([i.taste, i.row, i.alcolvl])
   if (len(variation_list) == 0):
-    return -1
+    return Response(status_code=404)
 
   variation_list.sort(key= lambda x : spatial.distance.cosine(user_taste, x[0]))
 
   id = variation_list[0][1]
-  result = []
   components = []
   st = df.iloc[id, [0,5,3,2]].to_list()
+  print(st)
   recipe = split_ingredients(st[1])
-  result.append(
-      {
+  result = {
         'name': st[0],
         'ingredients':[],
         "recipe": f'Recipe: {st[2]}\nGarnish: {st[3]}'
       }
-  )
 
   for ing in recipe:
-    result[0]['ingredients'].append({
-      'amount': ing[0],
-      'measure': ing[1],
-      'name': ing[2]
-    })
-    components.append(ing[2])
+    if re.match(r'[0-9]*\.*[0-9]*', ing[0]):
+      result['ingredients'].append({
+        'amount': ing[0],
+        'measure': ing[1],
+        'name': ing[2]
+      })
+      components.append(ing[2])
   
-  result[0]['img'] = query_image(components)
+  result['img'] = query_image(components)
   return result
 
 def top():

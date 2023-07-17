@@ -55,10 +55,11 @@ def mixup_res(start: StartMix):
 
 @server.post("/pickup/result")
 def pickup_res(data:StartPick):
-    result = main_pick_cocktail(data.alcohol_free, data.min_alc, data.max_alc, data.sweet, data.sour, data.savory, data.bitter, data.cream, data.spicy, data.fruity)
-    return {
-        "cocktails":result
-    }
+    try:
+        result = main_pick_cocktail(data.alcohol_free, data.min_alc, data.max_alc, data.sweet, data.sour, data.savory, data.bitter, data.cream, data.spicy, data.fruity)
+        return result
+    except:
+        return Response(status_code=500)
 
 @server.get("/top")
 def get_top():
