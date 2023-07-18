@@ -5,7 +5,7 @@ const CACHE_NAME = 'flutter-app-cache';
 
 const RESOURCES = {"assets/AssetManifest.bin": "8f88609b2fa78a0b70fe09624493956e",
 "assets/AssetManifest.json": "d080d5b83c37bf59fce130870d8a2e43",
-"assets/assets/arrow.svg": "448566b9f64928433fe76a1e348c65c1",
+"assets/assets/arrow.svg": "8b9a9dd9b0bff40d1ac76d0b3a152201",
 "assets/assets/back.png": "cf78de6eac030ca31f8c7315072f5a19",
 "assets/assets/book_load.gif": "221c887acef192a5ee54b37541e426d2",
 "assets/assets/fonts/CarterOne-Regular.ttf": "3226bb55ad746ec8b6495ce6655cfc63",
@@ -15,8 +15,8 @@ const RESOURCES = {"assets/AssetManifest.bin": "8f88609b2fa78a0b70fe09624493956e
 "assets/assets/fonts/Sansation-Regular.ttf": "b06ad7b83e55d7b3599a21635ab88644",
 "assets/assets/image_placeholder.png": "64e547023c54d2b4e0f55df604ea47c0",
 "assets/assets/logo.png": "65e31a03a55165aeede4c80313c14bc8",
-"assets/assets/mix_up.svg": "eabfdde4ea70dab8157ea12645fceabf",
-"assets/assets/pick_up.svg": "5e0b083afd8817729006d1de585fa19d",
+"assets/assets/mix_up.svg": "7ac532a962dde5b00fbe01e1f97d67ad",
+"assets/assets/pick_up.svg": "082b95a954317db65888a49e4cecbf54",
 "assets/assets/shake_load.gif": "d9797779f32beab88dafc46c3f7e1827",
 "assets/assets/top_10.svg": "43eaa637cb24f4caf4b949504b164e11",
 "assets/assets/wine_load.gif": "6ffc66db057e56b2e453e18df4b57ad6",
@@ -39,9 +39,9 @@ const RESOURCES = {"assets/AssetManifest.bin": "8f88609b2fa78a0b70fe09624493956e
 "icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
 "icons/icon.png": "078b92db58d6fc818ebce760eb490a2a",
-"index.html": "94200a56d7fa88e4ed2dd1928c7ae50a",
-"/": "94200a56d7fa88e4ed2dd1928c7ae50a",
-"main.dart.js": "e4d699a8aed1d5e597ffccc2b833e939",
+"index.html": "e2a27067142d1dcbe707bb963bd80160",
+"/": "e2a27067142d1dcbe707bb963bd80160",
+"main.dart.js": "1be67ef0c5578a0af3e0c863909da583",
 "manifest.json": "9e22fe2ab3561fdef1a3733b51cb111b",
 "version.json": "b31a11d725b11fdf6d09cc1d9dcace7f"};
 // The application shell files that are downloaded before a service worker can

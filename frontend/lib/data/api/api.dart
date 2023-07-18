@@ -43,6 +43,7 @@ class Api {
     ));
 
     if (resp.statusCode == 404) {
+      print("404");
       throw PickResultErrorReason.nothingFound;
     }
     final json = resp.data;
