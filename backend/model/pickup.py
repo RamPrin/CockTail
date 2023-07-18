@@ -99,5 +99,5 @@ def top():
 
 def top_img(id):
   return {
-      'img': base64.b64encode(open(f'data/files/imgs/{id}.png', 'rb').read())
+      'img': base64.b64encode(open(f'data/files/imgs/{id}.jpg', 'rb').read())
   }
