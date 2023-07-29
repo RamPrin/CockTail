@@ -7,7 +7,6 @@ from model.generator.reciper import query
 from model.generator.infer import query_image
 
 def recipe_generate(components):
-    print('Start generating...')
     request = query(components)
     start = -1
     for i in range(len(request)):

@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse, Response
+from fastapi.testclient import TestClient
 from model.mixup import ImpruvedCocktailGenerator
 from model.pickup import init_pickup, main_pick_cocktail, top, top_img
 
@@ -68,3 +69,12 @@ def get_top():
 @server.get("/top/{img_id}")
 def get_img(img_id: int):
     return top_img(img_id)
+
+
+def test_ingredients():
+    client = TestClient(server)
+    response = client.get('/mixup')
+    assert response.status_code == 200
+    ings = response.json()
+    print(ings['ingredients'])
+    assert len(ings['ingredients']) > 0 
