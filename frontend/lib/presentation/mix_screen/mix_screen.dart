@@ -25,7 +25,10 @@ class MixScreen extends HookConsumerWidget {
         pageAsset: Assets.mixUp,
         child: switch (state) {
           Loading _ => Center(
-              child: Image.asset(Assets.shakeLoad,height: 100,),
+              child: Image.asset(
+                Assets.shakeLoad,
+                height: 100,
+              ),
             ),
           Error _ => ErrorPage(
               onRetry: () {
@@ -167,7 +170,15 @@ class MixScreen extends HookConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         AnimatedButton(
-                          onTap: () => context.goNamed(Routes.resultPage),
+                          onTap: () => context.goNamed(
+                            RouteNames.mixUpResult,
+                            queryParameters: {
+                              'include':
+                                  data.included.map((e) => e.name).toList(),
+                              "exclude":
+                                  data.excluded.map((e) => e.name).toList(),
+                            },
+                          ),
                           child: Container(
                             padding: const EdgeInsets.all(15),
                             decoration: BoxDecoration(

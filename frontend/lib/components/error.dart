@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ErrorPage extends HookConsumerWidget {
-  const ErrorPage({super.key, this.onRetry});
+  const ErrorPage({super.key, this.errorText, this.retryText, this.onRetry});
+
+  final String? errorText;
+  final String? retryText;
 
   final VoidCallback? onRetry;
 
@@ -12,9 +15,10 @@ class ErrorPage extends HookConsumerWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Text(
-          "Something went wrong.",
-          style: TextStyle(fontSize: 30, color: Colors.white,fontWeight: FontWeight.bold),
+        Text(
+          errorText ?? "Something went wrong.",
+          style: const TextStyle(
+              fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
         ),
         const SizedBox(
           height: 50,
@@ -33,9 +37,9 @@ class ErrorPage extends HookConsumerWidget {
                 width: 4,
               ),
             ),
-            child: const Text(
-              'Try Again',
-              style: TextStyle(
+            child: Text(
+              retryText ?? 'Try Again',
+              style: const TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,

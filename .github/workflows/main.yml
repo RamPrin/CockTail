@@ -1,0 +1,21 @@
+run-name: 'Backend testing' 
+on: 
+    push:
+      branches:
+        - backend
+    workflow_dispatch:
+jobs:
+  testing:
+    name: testing
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with: 
+        fetch-depth: 0
+    - uses: actions/setup-python@v4
+      with: 
+        python-version: 3.10
+    - run: |
+        cd backend && pip install -r requirements.txt
+    - run: |
+        pytest 
